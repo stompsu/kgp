@@ -29,13 +29,12 @@ Changed from the original plan: one conquest per peak (`PUT /api/me/conquests/{s
 - Progress: visited markers look different (not by colour alone), list view, "12 / 28" counter.
 - Acceptance: a user can only see and change their own conquests and photos (IDOR test); an upload over 15 MB or with the wrong type is rejected.
 
-## M3 Trails & parking
+## M3 Trails & parking ✅ (2026-11-17)
+Verified locally and on the live site: all 28 peaks have trails and parking (280 parkings, 112 trails; Wysoka Kopa only through the 500 m fallback). Added on the way: the API answers `503` until seeding finishes so empty answers are never cached, and deep links zoom to the peak. Follow-up: the 10 parkings nearest Rysy are all on the Slovak side; Palenica Białczańska (about 8 km) doesn't make the top 10.
 **Owners:** geo-data-curator → backend-dotnet → frontend-angular
 - Offline Overpass import of `amenity=parking` and `route=hiking` near each summit into `data/osm/` and Azure SQL.
 - `GET /api/peaks/{slug}/parking`, `/trails` (GeoJSON). Map layers with a toggle, plus the Waymarked Trails overlay.
 - Acceptance: each peak shows at least one trail, or a note saying none was found; OSM/ODbL attribution is visible.
-- Status (2026-11-17): built and verified locally, not deployed yet. Import covers all 28 peaks: 280 parkings, 112 trails (Wysoka Kopa only through the 500 m fallback). The API answers `503` until seeding finishes so empty answers aren't cached.
-- Known gap: the 10 parkings nearest Rysy are all on the Slovak side; Palenica Białczańska (about 8 km) doesn't make the top 10.
 
 ## M4 Guest demo mode
 **Owner:** frontend-angular
