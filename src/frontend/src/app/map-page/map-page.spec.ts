@@ -13,6 +13,8 @@ class MapStub {
   readonly peaks = input<Peak[]>([]);
   readonly selectedSlug = input<string | null>(null);
   readonly label = input('');
+  readonly conquered = input<ReadonlySet<string>>(new Set());
+  readonly conqueredLabel = input('');
 }
 
 const rysy: Peak = {

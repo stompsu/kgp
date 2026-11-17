@@ -1,4 +1,7 @@
+using Azure.Identity;
+using Azure.Storage.Blobs;
 using Kgp.Infrastructure.Persistence;
+using Kgp.Infrastructure.Photos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,28 @@ public static class DependencyInjection
         services.AddSingleton<DatabaseInitializer>();
         services.AddHostedService<DatabaseInitializerService>();
 
+        services.AddKgpPhotoStore(configuration);
+
         return services;
+    }
+
+    /// <summary>Azure Blob with managed identity when Storage:BlobEndpoint is set; otherwise the local file system.</summary>
+    private static void AddKgpPhotoStore(this IServiceCollection services, IConfiguration configuration)
+    {
+        var options = configuration.GetSection("Storage").Get<StorageOptions>() ?? new StorageOptions();
+
+        if (!string.IsNullOrWhiteSpace(options.BlobEndpoint))
+        {
+            var container = new BlobServiceClient(new Uri(options.BlobEndpoint), new DefaultAzureCredential())
+                .GetBlobContainerClient(options.ContainerName);
+            services.AddSingleton<IPhotoStore>(new BlobPhotoStore(container));
+        }
+        else
+        {
+            var path = string.IsNullOrWhiteSpace(options.LocalPath)
+                ? Path.Combine(Path.GetTempPath(), "kgp-photos")
+                : options.LocalPath;
+            services.AddSingleton<IPhotoStore>(new FileSystemPhotoStore(path));
+        }
     }
 }

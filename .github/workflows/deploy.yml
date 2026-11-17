@@ -5,6 +5,9 @@ name: Deploy
 # identity id-kgp-github-dev, whose federated credential trusts
 # `repo:stompsu@12047598/kgp@1461006413:environment:dev` (GitHub's ID-based OIDC subject)
 # (see docs/architecture.md#ci-deploy). No secrets.
+# Optional repository variables for sign-in (docs/auth-setup.md): KGP_AUTH_TENANT_ID,
+# KGP_AUTH_TENANT_SUBDOMAIN, KGP_API_CLIENT_ID, KGP_SPA_CLIENT_ID. They are IDs, not secrets.
+# Until all four are set, the API and web app run with sign-in off.
 on:
   workflow_dispatch:
   push:
@@ -28,6 +31,10 @@ jobs:
       AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
       AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
       AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+      KGP_AUTH_TENANT_ID: ${{ vars.KGP_AUTH_TENANT_ID }}
+      KGP_AUTH_TENANT_SUBDOMAIN: ${{ vars.KGP_AUTH_TENANT_SUBDOMAIN }}
+      KGP_API_CLIENT_ID: ${{ vars.KGP_API_CLIENT_ID }}
+      KGP_SPA_CLIENT_ID: ${{ vars.KGP_SPA_CLIENT_ID }}
     steps:
       - uses: actions/checkout@v4
       - uses: Azure/setup-azd@v2
@@ -56,6 +63,11 @@ jobs:
           case "$image" in
             *.azurecr.io/*) azd env set SERVICE_API_IMAGE_NAME "$image" ;;
           esac
+          # Sign-in settings: read by Bicep (main.parameters.json) and by the web prepackage hook.
+          for name in KGP_AUTH_TENANT_ID KGP_AUTH_TENANT_SUBDOMAIN KGP_API_CLIENT_ID KGP_SPA_CLIENT_ID; do
+            value=$(printenv "$name" || true)
+            if [ -n "$value" ]; then azd env set "$name" "$value"; fi
+          done
 
       - run: azd provision --no-prompt
       - run: azd deploy --no-prompt

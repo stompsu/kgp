@@ -6,10 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { PEAK_COUNT, Peak } from './peak';
+import { ConquestSectionComponent } from '../conquests/conquest-section';
+import { AuthService } from '../core/auth';
 
 @Component({
   selector: 'app-peak-details',
-  imports: [DecimalPipe, MatButtonModule, MatIconModule, MatExpansionModule, TranslocoPipe],
+  imports: [ConquestSectionComponent, DecimalPipe, MatButtonModule, MatIconModule, MatExpansionModule, TranslocoPipe],
   template: `
     @let p = peak();
     <header class="head">
@@ -21,6 +23,13 @@ import { PEAK_COUNT, Peak } from './peak';
     <article class="body">
       <p class="eyebrow">{{ 'peak.number' | transloco: { number: p.number, total: total } }}</p>
       <h2 class="name">{{ p.name }}</h2>
+
+      @if (auth.isSignedIn()) {
+        <!-- Deferred: the conquest UI (dialogs, overlay) is only downloaded for signed-in users. -->
+        @defer (on immediate) {
+          <app-conquest-section [peak]="p" />
+        }
+      }
 
       <dl class="facts">
         <div><dt>{{ 'peak.range' | transloco }}</dt><dd>{{ p.range }}</dd></div>
@@ -76,6 +85,7 @@ import { PEAK_COUNT, Peak } from './peak';
 export class PeakDetailsComponent {
   readonly peak = input.required<Peak>();
   readonly closed = output<void>();
+  protected readonly auth = inject(AuthService);
   protected readonly total = PEAK_COUNT;
 
   private readonly lang = toSignal(inject(TranslocoService).langChanges$, { initialValue: 'pl' });

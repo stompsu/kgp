@@ -17,7 +17,19 @@ param apiImage string = ''
 @description('Static Web Apps is available in a limited set of regions.')
 param staticWebAppLocation string = 'westeurope'
 
+// Sign-in (ADR 0003). The Entra External ID tenant lives outside azd (rg-kgp-identity, docs/auth-setup.md).
+// All empty until it exists, which keeps sign-in off. None of these are secrets.
+@description('Entra External ID tenant ID (KGP_AUTH_TENANT_ID).')
+param authTenantId string = ''
+
+@description('External tenant subdomain, the part before .ciamlogin.com (KGP_AUTH_TENANT_SUBDOMAIN).')
+param authTenantSubdomain string = ''
+
+@description('Client ID of the kgp-api app registration, used as the token audience (KGP_API_CLIENT_ID).')
+param apiClientId string = ''
+
 var tags = { 'azd-env-name': environmentName, app: 'kgp' }
+var authEnabled = !empty(authTenantId) && !empty(authTenantSubdomain) && !empty(apiClientId)
 var token = toLower(uniqueString(subscription().id, environmentName, location))
 
 module monitoring 'modules/monitoring.bicep' = {
@@ -70,6 +82,8 @@ module api 'modules/containerapp.bicep' = {
     keyVaultUri: keyVault.outputs.uri
     sqlServerFqdn: sql.outputs.fqdn
     sqlDatabase: sql.outputs.databaseName
+    authAuthority: authEnabled ? 'https://${authTenantSubdomain}.ciamlogin.com/${authTenantId}/v2.0' : ''
+    authAudience: authEnabled ? apiClientId : ''
   }
 }
 

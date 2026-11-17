@@ -28,6 +28,84 @@
     "sources": "Źródła",
     "close": "Zamknij",
     "backToList": "Wszystkie szczyty",
-    "trailsComing": "Szlaki i parkingi pojawią się wkrótce."
+    "trailsComing": "Szlaki i parkingi pojawią się wkrótce.",
+    "conquered": "zdobyty"
+  },
+  "auth": {
+    "signIn": "Zaloguj się",
+    "signOut": "Wyloguj się",
+    "accountMenu": "Konto: {{name}}"
+  },
+  "progress": {
+    "short": "{{count}} / {{total}}",
+    "label": "Zdobyte szczyty: {{count}} z {{total}}"
+  },
+  "filter": {
+    "label": "Pokaż szczyty",
+    "all": "Wszystkie",
+    "conquered": "Zdobyte",
+    "remaining": "Do zdobycia",
+    "noneConquered": "Nie masz jeszcze zdobytych szczytów.",
+    "noneRemaining": "Wszystkie szczyty zdobyte. Gratulacje!"
+  },
+  "conquest": {
+    "conqueredOn": "Zdobyty {{date}}",
+    "mark": "Oznacz jako zdobyty",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "loading": "Wczytywanie Twoich zdobyczy…",
+    "loadError": "Nie udało się wczytać Twoich zdobyczy.",
+    "saved": "Zapisano.",
+    "deleted": "Usunięto zdobycie.",
+    "deleteTitle": "Usunąć zdobycie szczytu {{name}}?",
+    "deleteMessage": "Usuniemy datę, notatki i zdjęcie. Tej operacji nie można cofnąć.",
+    "addTitle": "Zdobycie: {{name}}",
+    "editTitle": "Edycja zdobycia: {{name}}",
+    "date": "Data zdobycia",
+    "dateHint": "DD.MM.RRRR",
+    "notes": "Notatki",
+    "photo": "Zdjęcie ze szczytu (opcjonalnie)",
+    "photoHint": "JPG, PNG lub HEIC, do 15 MB. Zdjęcie zostanie pomniejszone, a dane EXIF (w tym GPS) usunięte.",
+    "choosePhoto": "Wybierz zdjęcie",
+    "replacePhoto": "Zmień zdjęcie",
+    "removePhoto": "Usuń zdjęcie",
+    "clearPhoto": "Nie dodawaj",
+    "photoWillBeRemoved": "Zdjęcie zostanie usunięte po zapisaniu.",
+    "undo": "Cofnij",
+    "photoAlt": "Zdjęcie ze szczytu {{name}}",
+    "photoLoading": "Wczytywanie zdjęcia",
+    "photoLoadFailed": "Nie udało się wczytać zdjęcia.",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "errors": {
+      "dateRequired": "Podaj datę zdobycia.",
+      "dateInvalid": "Nieprawidłowa data. Użyj formatu DD.MM.RRRR.",
+      "dateFuture": "Data nie może być z przyszłości.",
+      "dateTooEarly": "Data nie może być wcześniejsza niż 01.01.1900.",
+      "dateServer": "Serwer odrzucił tę datę. Sprawdź, czy nie jest z przyszłości.",
+      "notesTooLong": "Notatki mogą mieć najwyżej {{max}} znaków.",
+      "notesServer": "Serwer odrzucił notatki (najwyżej 2000 znaków).",
+      "photoTooLarge": "Zdjęcie jest za duże. Maksymalny rozmiar to 15 MB.",
+      "photoType": "Nieobsługiwany format zdjęcia. Wybierz plik JPG, PNG lub HEIC.",
+      "photoUpload": "Nie udało się wysłać zdjęcia.",
+      "savedWithoutPhoto": "Zdobycie zapisano, ale zdjęcia nie. Wybierz inne zdjęcie i zapisz ponownie albo anuluj.",
+      "invalid": "Serwer odrzucił dane. Sprawdź formularz.",
+      "signedOut": "Sesja wygasła. Zaloguj się ponownie.",
+      "generic": "Nie udało się zapisać. Spróbuj ponownie.",
+      "deleteFailed": "Nie udało się usunąć. Spróbuj ponownie."
+    }
+  },
+  "datepicker": {
+    "calendar": "Kalendarz",
+    "open": "Otwórz kalendarz",
+    "close": "Zamknij kalendarz",
+    "prevMonth": "Poprzedni miesiąc",
+    "nextMonth": "Następny miesiąc",
+    "prevYear": "Poprzedni rok",
+    "nextYear": "Następny rok",
+    "prevMultiYear": "Poprzednie 24 lata",
+    "nextMultiYear": "Następne 24 lata",
+    "chooseDate": "Wybierz datę",
+    "chooseMonthYear": "Wybierz miesiąc i rok"
   }
 }

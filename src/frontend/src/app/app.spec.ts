@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { App } from './app';
+import { AuthService } from './core/auth';
 import { getTranslocoModule } from './testing/transloco-testing';
 
 describe('App', () => {
@@ -30,5 +32,26 @@ describe('App', () => {
     await fixture.whenStable();
 
     expect(el.querySelector('h1')?.textContent).toContain('Crown of Polish Mountains');
+  });
+
+  it('has no sign-in button when sign-in is not configured', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+
+    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('Zaloguj się');
+  });
+
+  it('shows the sign-in button when sign-in is configured', async () => {
+    const signIn = vi.fn();
+    TestBed.overrideProvider(AuthService, {
+      useValue: { enabled: signal(true), account: signal(null), displayName: signal(null), isSignedIn: signal(false), signIn },
+    });
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const button = [...(fixture.nativeElement as HTMLElement).querySelectorAll('button')].find((b) => b.textContent?.includes('Zaloguj się'));
+
+    expect(button).toBeTruthy();
+    button!.click();
+    expect(signIn).toHaveBeenCalled();
   });
 });

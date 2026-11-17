@@ -7,9 +7,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { tap } from 'rxjs';
 import { Language, rememberLanguage } from './core/i18n';
+import { AuthService } from './core/auth';
+import { UserMenuComponent } from './core/user-menu';
 
 @Component({
-  imports: [RouterOutlet, MatToolbarModule, MatButtonModule, TranslocoPipe],
+  imports: [RouterOutlet, MatToolbarModule, MatButtonModule, TranslocoPipe, UserMenuComponent],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
@@ -17,6 +19,7 @@ import { Language, rememberLanguage } from './core/i18n';
 export class App {
   private readonly transloco = inject(TranslocoService);
   private readonly document = inject(DOCUMENT);
+  protected readonly auth = inject(AuthService);
 
   protected readonly lang = toSignal(
     this.transloco.langChanges$.pipe(tap((lang) => (this.document.documentElement.lang = lang))),

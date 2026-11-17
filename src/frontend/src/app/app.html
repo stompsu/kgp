@@ -4,6 +4,12 @@
   <button mat-button (click)="toggleLanguage()" [attr.aria-label]="'app.language' | transloco">
     {{ 'app.switchTo' | transloco }}
   </button>
+  @if (auth.enabled()) {
+    <!-- Deferred: the menu and its overlay code are only downloaded when sign-in is configured. -->
+    @defer (on immediate) {
+      <app-user-menu />
+    }
+  }
 </mat-toolbar>
 <main class="app-main">
   <router-outlet />

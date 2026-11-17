@@ -10,6 +10,15 @@
     },
     "apiImage": {
       "value": "${SERVICE_API_IMAGE_NAME=}"
+    },
+    "authTenantId": {
+      "value": "${KGP_AUTH_TENANT_ID=}"
+    },
+    "authTenantSubdomain": {
+      "value": "${KGP_AUTH_TENANT_SUBDOMAIN=}"
+    },
+    "apiClientId": {
+      "value": "${KGP_API_CLIENT_ID=}"
     }
   }
 }

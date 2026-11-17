@@ -1,7 +1,7 @@
 param location string
 param tags object
 param token string
-@description('Principal that reads/writes photos and issues user-delegation SAS tokens.')
+@description('Principal that reads, writes and deletes photos (the API identity).')
 param dataPrincipalId string
 
 var blobDataContributorRoleId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
@@ -14,7 +14,7 @@ resource account 'Microsoft.Storage/storageAccounts@2023-05-01' = {
   sku: { name: 'Standard_LRS' }
   properties: {
     allowBlobPublicAccess: false
-    allowSharedKeyAccess: false // only Entra auth + user-delegation SAS
+    allowSharedKeyAccess: false // Entra auth only (the API's managed identity)
     minimumTlsVersion: 'TLS1_2'
     supportsHttpsTrafficOnly: true
   }
@@ -24,18 +24,12 @@ resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2023-05-01'
   parent: account
   name: 'default'
   properties: {
-    // Browser uploads go straight to Blob with a short-lived SAS; allowed origins are tightened in M2.
-    cors: {
-      corsRules: [
-        {
-          allowedOrigins: [ '*' ]
-          allowedMethods: [ 'PUT', 'OPTIONS' ]
-          allowedHeaders: [ '*' ]
-          exposedHeaders: [ '*' ]
-          maxAgeInSeconds: 3600
-        }
-      ]
-    }
+    // Photos go through the API (ADR 0003); browsers never talk to storage. An explicit empty list
+    // also removes the CORS rule that M1 deployed.
+    cors: { corsRules: [] }
+    // Soft delete stays off on purpose: deleting a conquest must remove its photo (GPS-free, but still
+    // personal data) at once, not keep it recoverable for days.
+    deleteRetentionPolicy: { enabled: false }
   }
 }
 

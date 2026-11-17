@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, afterNextRender, effect, input, output, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, afterNextRender, effect, input, output, untracked, viewChild } from '@angular/core';
 import * as L from 'leaflet';
 import { Peak } from '../peaks/peak';
 
@@ -17,6 +17,10 @@ export class MapComponent implements OnDestroy {
   readonly peaks = input.required<Peak[]>();
   readonly selectedSlug = input<string | null>(null);
   readonly label = input('');
+  /** Slugs of conquered peaks; their markers get a different shape and a check mark, not just a colour. */
+  readonly conquered = input<ReadonlySet<string>>(new Set());
+  /** Translated word appended to a conquered marker's accessible name. */
+  readonly conqueredLabel = input('');
   readonly peakSelected = output<string>();
 
   private readonly mapHost = viewChild.required<ElementRef<HTMLDivElement>>('mapHost');
@@ -52,7 +56,11 @@ export class MapComponent implements OnDestroy {
       this.resizeObserver.observe(host);
     });
 
-    effect(() => this.renderMarkers(this.peaks()));
+    effect(() => {
+      this.conquered();
+      this.conqueredLabel();
+      this.renderMarkers(this.peaks());
+    });
     effect(() => this.focusSelected(this.selectedSlug()));
   }
 
@@ -66,11 +74,14 @@ export class MapComponent implements OnDestroy {
     this.layer.clearLayers();
     this.markers.clear();
 
+    const conquered = this.conquered();
+    const conqueredLabel = this.conqueredLabel();
     for (const peak of peaks) {
       if (peak.latitude === null || peak.longitude === null) continue;
+      const done = conquered.has(peak.slug);
       const marker = L.marker([peak.latitude, peak.longitude], {
-        icon: markerIcon(peak, peak.slug === this.selectedSlug()),
-        title: `${peak.number}. ${peak.name} (${peak.heightMeters} m)`,
+        icon: markerIcon(peak, peak.slug === this.selectedSlug(), done),
+        title: `${peak.number}. ${peak.name} (${peak.heightMeters} m)${done && conqueredLabel ? ` – ${conqueredLabel}` : ''}`,
         alt: peak.name,
         keyboard: true,
         riseOnHover: true,
@@ -83,8 +94,10 @@ export class MapComponent implements OnDestroy {
 
   private focusSelected(slug: string | null): void {
     if (!this.map || !this.fitted) return;
+    // Untracked: a new conquest shouldn't make the map fly back to the selected peak.
+    const conquered = untracked(this.conquered);
     for (const peak of this.peaks()) {
-      this.markers.get(peak.slug)?.setIcon(markerIcon(peak, peak.slug === slug)).setZIndexOffset(peak.slug === slug ? 1000 : 0);
+      this.markers.get(peak.slug)?.setIcon(markerIcon(peak, peak.slug === slug, conquered.has(peak.slug))).setZIndexOffset(peak.slug === slug ? 1000 : 0);
     }
     const marker = slug ? this.markers.get(slug) : undefined;
     if (marker) {
@@ -93,10 +106,12 @@ export class MapComponent implements OnDestroy {
   }
 }
 
-function markerIcon(peak: Peak, selected: boolean): L.DivIcon {
+function markerIcon(peak: Peak, selected: boolean, conquered: boolean): L.DivIcon {
+  const classes = ['peak-marker', selected ? 'selected' : '', conquered ? 'conquered' : ''].filter(Boolean).join(' ');
+  const check = conquered ? '<span class="peak-check" aria-hidden="true">✓</span>' : '';
   return L.divIcon({
     className: '',
-    html: `<div class="peak-marker${selected ? ' selected' : ''}"><span>${peak.number}</span></div>`,
+    html: `<div class="${classes}"><span>${peak.number}</span></div>${check}`,
     iconSize: [28, 28],
     iconAnchor: [3, 28],
   });

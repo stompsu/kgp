@@ -14,6 +14,10 @@ param blobEndpoint string
 param keyVaultUri string
 param sqlServerFqdn string
 param sqlDatabase string
+@description('JWT authority of the Entra External ID tenant; empty = sign-in off.')
+param authAuthority string = ''
+@description('Client ID of the kgp-api app registration (token audience); empty = sign-in off.')
+param authAudience string = ''
 
 resource workspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
   name: logAnalyticsWorkspaceName
@@ -59,13 +63,17 @@ resource api 'Microsoft.App/containerApps@2024-03-01' = {
           name: 'api'
           // Keep the image azd deployed so re-provisioning doesn't roll the API back to a placeholder.
           image: empty(image) ? 'mcr.microsoft.com/dotnet/samples:aspnetapp' : image
-          resources: { cpu: json('0.25'), memory: '0.5Gi' }
+          // Photo processing (Magick.NET, uploads up to 15 MB) needs more than 0.5 Gi. 0.5 vCPU / 1 Gi is a valid Consumption pair.
+          resources: { cpu: json('0.5'), memory: '1Gi' }
           env: [
             { name: 'AZURE_CLIENT_ID', value: identityClientId }
             { name: 'APPLICATIONINSIGHTS_CONNECTION_STRING', secretRef: 'appinsights-connection-string' }
             { name: 'Cors__AllowedOrigins__0', value: allowedOrigin }
             { name: 'Storage__BlobEndpoint', value: blobEndpoint }
             { name: 'KeyVault__Uri', value: keyVaultUri }
+            // Not secrets. Empty values switch sign-in off in the API (/api/me/* returns 401).
+            { name: 'Auth__Authority', value: authAuthority }
+            { name: 'Auth__Audience', value: authAudience }
             { name: 'ConnectionStrings__Kgp', value: 'Server=tcp:${sqlServerFqdn},1433;Database=${sqlDatabase};Authentication=Active Directory Managed Identity;User Id=${identityClientId};Encrypt=True;Connect Timeout=60' }
           ]
           probes: [

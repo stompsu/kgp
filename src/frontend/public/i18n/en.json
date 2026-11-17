@@ -28,6 +28,84 @@
     "sources": "Sources",
     "close": "Close",
     "backToList": "All peaks",
-    "trailsComing": "Trails and parking are coming soon."
+    "trailsComing": "Trails and parking are coming soon.",
+    "conquered": "conquered"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "accountMenu": "Account: {{name}}"
+  },
+  "progress": {
+    "short": "{{count}} / {{total}}",
+    "label": "Peaks conquered: {{count}} of {{total}}"
+  },
+  "filter": {
+    "label": "Show peaks",
+    "all": "All",
+    "conquered": "Conquered",
+    "remaining": "Remaining",
+    "noneConquered": "You haven't conquered any peaks yet.",
+    "noneRemaining": "All peaks conquered. Congratulations!"
+  },
+  "conquest": {
+    "conqueredOn": "Conquered {{date}}",
+    "mark": "Mark as conquered",
+    "edit": "Edit",
+    "delete": "Delete",
+    "loading": "Loading your conquests…",
+    "loadError": "Couldn't load your conquests.",
+    "saved": "Saved.",
+    "deleted": "Conquest deleted.",
+    "deleteTitle": "Delete your conquest of {{name}}?",
+    "deleteMessage": "The date, notes and photo will be deleted. This can't be undone.",
+    "addTitle": "Conquest: {{name}}",
+    "editTitle": "Edit conquest: {{name}}",
+    "date": "Date conquered",
+    "dateHint": "DD/MM/YYYY",
+    "notes": "Notes",
+    "photo": "Summit photo (optional)",
+    "photoHint": "JPG, PNG or HEIC, up to 15 MB. The photo is resized and its EXIF data (including GPS) removed.",
+    "choosePhoto": "Choose photo",
+    "replacePhoto": "Replace photo",
+    "removePhoto": "Remove photo",
+    "clearPhoto": "Don't add",
+    "photoWillBeRemoved": "The photo will be removed when you save.",
+    "undo": "Undo",
+    "photoAlt": "Summit photo of {{name}}",
+    "photoLoading": "Loading photo",
+    "photoLoadFailed": "Couldn't load the photo.",
+    "cancel": "Cancel",
+    "save": "Save",
+    "errors": {
+      "dateRequired": "Enter the date you conquered it.",
+      "dateInvalid": "Invalid date. Use DD/MM/YYYY.",
+      "dateFuture": "The date can't be in the future.",
+      "dateTooEarly": "The date can't be before 01/01/1900.",
+      "dateServer": "The server rejected this date. Check it isn't in the future.",
+      "notesTooLong": "Notes can have at most {{max}} characters.",
+      "notesServer": "The server rejected the notes (at most 2000 characters).",
+      "photoTooLarge": "The photo is too large. The limit is 15 MB.",
+      "photoType": "Unsupported photo format. Choose a JPG, PNG or HEIC file.",
+      "photoUpload": "Couldn't upload the photo.",
+      "savedWithoutPhoto": "The conquest was saved, but the photo wasn't. Choose another photo and save again, or cancel.",
+      "invalid": "The server rejected the data. Check the form.",
+      "signedOut": "Your session has expired. Please sign in again.",
+      "generic": "Couldn't save. Please try again.",
+      "deleteFailed": "Couldn't delete. Please try again."
+    }
+  },
+  "datepicker": {
+    "calendar": "Calendar",
+    "open": "Open calendar",
+    "close": "Close calendar",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month",
+    "prevYear": "Previous year",
+    "nextYear": "Next year",
+    "prevMultiYear": "Previous 24 years",
+    "nextMultiYear": "Next 24 years",
+    "chooseDate": "Choose date",
+    "chooseMonthYear": "Choose month and year"
   }
 }

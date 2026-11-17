@@ -7,6 +7,8 @@ import { MapComponent } from '../map/map';
 import { PeakListComponent } from '../peaks/peak-list';
 import { PeakDetailsComponent } from '../peaks/peak-details';
 import { PeaksService } from '../peaks/peak';
+import { AuthService } from '../core/auth';
+import { ConquestsService } from '../conquests/conquest';
 
 /** After this long, explain that the serverless API/DB are waking up rather than looking stuck. */
 const WAKING_HINT_AFTER_MS = 4000;
@@ -20,6 +22,8 @@ const WAKING_HINT_AFTER_MS = 4000;
         [peaks]="list()"
         [selectedSlug]="slug() ?? null"
         [label]="'map.label' | transloco"
+        [conquered]="conquered()"
+        [conqueredLabel]="'peak.conquered' | transloco"
         (peakSelected)="select($event)" />
     </section>
 
@@ -39,7 +43,11 @@ const WAKING_HINT_AFTER_MS = 4000;
           <p class="status" role="alert">{{ 'peaks.notFound' | transloco }}</p>
         }
       } @else {
-        <app-peak-list [peaks]="list()" (peakSelected)="select($event)" />
+        <app-peak-list
+          [peaks]="list()"
+          [conquered]="conquered()"
+          [tracking]="auth.isSignedIn()"
+          (peakSelected)="select($event)" />
       }
     </aside>
   `,
@@ -71,6 +79,8 @@ export class MapPage {
 
   protected readonly peaks = inject(PeaksService).peaks;
   private readonly router = inject(Router);
+  protected readonly auth = inject(AuthService);
+  protected readonly conquered = inject(ConquestsService).conqueredSlugs;
 
   /** Safe read: `resource.value()` throws while the resource is in an error state. */
   protected readonly list = computed(() => (this.peaks.hasValue() ? this.peaks.value() : []));
