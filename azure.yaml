@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+name: kgp
+infra:
+  provider: bicep
+  path: infra
+services:
+  api:
+    project: src/backend
+    language: dotnet
+    host: containerapp
+    docker:
+      path: Dockerfile
+  web:
+    project: src/frontend
+    language: js
+    host: staticwebapp
+    dist: dist/frontend/browser

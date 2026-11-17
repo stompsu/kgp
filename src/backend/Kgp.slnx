@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Kgp.Api/Kgp.Api.csproj" />
+  <Project Path="Kgp.Domain/Kgp.Domain.csproj" />
+  <Project Path="Kgp.Infrastructure/Kgp.Infrastructure.csproj" />
+  <Project Path="Kgp.Tests/Kgp.Tests.csproj" />
+</Solution>

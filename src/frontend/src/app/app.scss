@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.app-header {
+  padding: 0.75rem 1rem;
+
+  h1 { margin: 0; font-size: 1.25rem; }
+  .disclaimer { margin: 0.25rem 0 0; font-size: 0.8rem; opacity: 0.75; }
+}
+
+.app-main {
+  flex: 1;
+  min-height: 0;
+}

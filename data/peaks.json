@@ -1,0 +1,385 @@
+{
+  "$comment": "Official KGP list, fetched 2026-11-17. Heights per kgp.info.pl. Coordinates intentionally null until geo-data-curator verifies them (M1).",
+  "peaks": [
+    {
+      "number": 1,
+      "slug": "lysica",
+      "name": "Łysica",
+      "range": "Góry Świętokrzyskie",
+      "heightMeters": 612,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Highest point disputed between eastern (Agata, 613.96 m) and western summit; Wikipedia table gives 614 m.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 2,
+      "slug": "sleza",
+      "name": "Ślęża",
+      "range": "Masyw Ślęży",
+      "heightMeters": 718,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Not on the original 1997 list of 27 peaks.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "skopiec",
+      "name": "Skopiec",
+      "range": "Góry Kaczawskie",
+      "heightMeters": 721,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Newer measurements put Okole (725.3 m) higher; KGP keeps Skopiec. Wikipedia gives 724 m.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 4,
+      "slug": "klodzka-gora",
+      "name": "Kłodzka Góra",
+      "range": "Góry Bardzkie",
+      "heightMeters": 757,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Nearby Szeroka Góra reported higher. Wikipedia gives 765 m.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 5,
+      "slug": "chelmiec",
+      "name": "Chełmiec",
+      "range": "Góry Wałbrzyskie",
+      "heightMeters": 851,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Height historically measured with the observation tower; Wikipedia names Borowa as the true highest peak.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 6,
+      "slug": "biskupia-kopa",
+      "name": "Biskupia Kopa",
+      "range": "Góry Opawskie",
+      "heightMeters": 890,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 7,
+      "slug": "lubomir",
+      "name": "Lubomir",
+      "range": "Beskid Makowski",
+      "heightMeters": 904,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Some regionalisations place Lubomir in Beskid Wyspowy (highest of Beskid Makowski would then be Mędralowa).",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 8,
+      "slug": "szczeliniec-wielki",
+      "name": "Szczeliniec Wielki",
+      "range": "Góry Stołowe",
+      "heightMeters": 919,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia cites 919 m and 922 m in different places.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 9,
+      "slug": "czupel",
+      "name": "Czupel",
+      "range": "Beskid Mały",
+      "heightMeters": 930,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia gives 931/933 m.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 10,
+      "slug": "waligora",
+      "name": "Waligóra",
+      "range": "Góry Kamienne",
+      "heightMeters": 934,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia gives 936 m.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 11,
+      "slug": "skalnik",
+      "name": "Skalnik",
+      "range": "Rudawy Janowickie",
+      "heightMeters": 945,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia names Ostra Mała (SW summit of Skalnik) as the highest point.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 12,
+      "slug": "jagodna",
+      "name": "Jagodna",
+      "range": "Góry Bystrzyckie",
+      "heightMeters": 977,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia: highest point is an unnamed 985 m summit.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 13,
+      "slug": "kowadlo",
+      "name": "Kowadło",
+      "range": "Góry Złote",
+      "heightMeters": 989,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia: highest Polish summit of Góry Złote is Brusek or Postawna.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 14,
+      "slug": "lackowa",
+      "name": "Lackowa",
+      "range": "Beskid Niski",
+      "heightMeters": 997,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 15,
+      "slug": "wielka-sowa",
+      "name": "Wielka Sowa",
+      "range": "Góry Sowie",
+      "heightMeters": 1015,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 16,
+      "slug": "wysoka",
+      "name": "Wysoka",
+      "range": "Pieniny",
+      "heightMeters": 1050,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Replaced Trzy Korony from the 1997 list.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 17,
+      "slug": "orlica",
+      "name": "Orlica",
+      "range": "Góry Orlickie",
+      "heightMeters": 1084,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 18,
+      "slug": "rudawiec",
+      "name": "Rudawiec",
+      "range": "Góry Bialskie",
+      "heightMeters": 1106,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia considers Góry Bialskie part of Góry Złote.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 19,
+      "slug": "wysoka-kopa",
+      "name": "Wysoka Kopa",
+      "range": "Góry Izerskie",
+      "heightMeters": 1126,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 20,
+      "slug": "mogielica",
+      "name": "Mogielica",
+      "range": "Beskid Wyspowy",
+      "heightMeters": 1171,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 21,
+      "slug": "skrzyczne",
+      "name": "Skrzyczne",
+      "range": "Beskid Śląski",
+      "heightMeters": 1257,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 22,
+      "slug": "radziejowa",
+      "name": "Radziejowa",
+      "range": "Beskid Sądecki",
+      "heightMeters": 1262,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia gives 1266 m.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 23,
+      "slug": "turbacz",
+      "name": "Turbacz",
+      "range": "Gorce",
+      "heightMeters": 1310,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 24,
+      "slug": "tarnica",
+      "name": "Tarnica",
+      "range": "Bieszczady",
+      "heightMeters": 1346,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 25,
+      "slug": "snieznik",
+      "name": "Śnieżnik",
+      "range": "Masyw Śnieżnika",
+      "heightMeters": 1425,
+      "latitude": null,
+      "longitude": null,
+      "notes": "Wikipedia table gives 1423 m.",
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/",
+        "https://pl.wikipedia.org/wiki/Korona_G%C3%B3r_Polski"
+      ]
+    },
+    {
+      "number": 26,
+      "slug": "sniezka",
+      "name": "Śnieżka",
+      "range": "Karkonosze",
+      "heightMeters": 1603,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 27,
+      "slug": "babia-gora",
+      "name": "Babia Góra",
+      "range": "Beskid Żywiecki",
+      "heightMeters": 1725,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    },
+    {
+      "number": 28,
+      "slug": "rysy",
+      "name": "Rysy",
+      "range": "Tatry",
+      "heightMeters": 2499,
+      "latitude": null,
+      "longitude": null,
+      "notes": null,
+      "sources": [
+        "https://kgp.info.pl/wykaz-szczytow/"
+      ]
+    }
+  ]
+}

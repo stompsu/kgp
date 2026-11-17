@@ -1,0 +1,18 @@
+# .NET
+bin/
+obj/
+TestResults/
+*.user
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+
+# azd local environments (may contain subscription ids)
+.azure/
+
+# OS / editors
+.DS_Store
+.idea/
+*.swp
