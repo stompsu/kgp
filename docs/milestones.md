@@ -7,11 +7,11 @@ Each milestone is closed by **qa-reviewer** once every acceptance criterion has 
 - Repo structure, `/health` API, Angular shell with an empty Leaflet map, Bicep for the full resource group, CI, subagents, docs.
 - Acceptance: `dotnet test`, `ng build`, `ng test` and `az bicep build` all pass; initial commit on `main`.
 
-## M1 Walking skeleton 🚧 (API live on Azure; web app upload waits for GitHub CI)
+## M1 Walking skeleton ✅ (2026-11-17)
 
-> Status 2026-11-17: `rg-kgp-dev` is provisioned and the API is deployed and serving all 28 peaks.
-> The web app is built but not uploaded: the Static Web Apps upload tool is Intel-only, and the dev Mac has no Rosetta 2.
-> The first web deploy will run from `.github/workflows/deploy.yml` (Linux runner) once the GitHub repo and OIDC are set up.
+> Live: web https://happy-dune-066863c03.8.azurestaticapps.net · API https://ca-kgp-api-2avduqnk3ybey.jollymushroom-4f5e347b.polandcentral.azurecontainerapps.io/api/peaks
+> Deployed from GitHub Actions (`stompsu/kgp`, managed identity `id-kgp-github-dev`, OIDC).
+
 **Owners:** geo-data-curator → backend-dotnet → frontend-angular → azure-infra
 - geo-data-curator fills verified coordinates for all 28 peaks in `data/peaks.json`, with sources.
 - EF Core + Azure SQL (`geography`) model, seeder, `GET /api/peaks`, `GET /api/peaks/{slug}` (anonymous).
