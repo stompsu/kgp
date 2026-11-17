@@ -8,9 +8,17 @@
   background: var(--mat-sys-primary);
   color: var(--mat-sys-on-primary);
 
-  .title { margin: 0; font: var(--mat-sys-title-large); }
+  // The title gives way (ellipsis) so the language and account buttons never get pushed off-screen.
+  .title {
+    margin: 0;
+    font: var(--mat-sys-title-large);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .spacer { flex: 1; }
-  button { color: inherit; }
+  button, app-user-menu { color: inherit; flex-shrink: 0; }
 
   @media (max-width: 599px) {
     .title { font: var(--mat-sys-title-medium); }

@@ -34,6 +34,9 @@ public static class AuthSetup
                 if (enabled)
                 {
                     jwt.Authority = options.Authority;
+                    // Signing keys are fetched from ciamlogin.com. On networks with broken IPv6 the default
+                    // handler waits on each IPv6 address before trying IPv4, so validation stalls past its timeout.
+                    jwt.BackchannelHttpHandler = new SocketsHttpHandler { ConnectCallback = ConnectIPv4FirstAsync };
                     // v2 tokens carry the client ID; accept the App ID URI form too.
                     jwt.TokenValidationParameters.ValidAudiences = [options.Audience, $"api://{options.Audience}"];
                 }
@@ -58,6 +61,30 @@ public static class AuthSetup
                 .RequireAssertion(context => HasScope(context.User, ConquestsScope)));
 
         return services;
+    }
+
+    /// <summary>Tries each resolved address, IPv4 first, giving each a few seconds to connect.</summary>
+    internal static async ValueTask<Stream> ConnectIPv4FirstAsync(SocketsHttpConnectionContext context, CancellationToken ct)
+    {
+        var addresses = await System.Net.Dns.GetHostAddressesAsync(context.DnsEndPoint.Host, ct);
+        Exception? last = null;
+        foreach (var address in addresses.OrderBy(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork ? 0 : 1))
+        {
+            var socket = new System.Net.Sockets.Socket(address.AddressFamily, System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.Tcp) { NoDelay = true };
+            try
+            {
+                using var attempt = CancellationTokenSource.CreateLinkedTokenSource(ct);
+                attempt.CancelAfter(TimeSpan.FromSeconds(5));
+                await socket.ConnectAsync(address, context.DnsEndPoint.Port, attempt.Token);
+                return new System.Net.Sockets.NetworkStream(socket, ownsSocket: true);
+            }
+            catch (Exception ex) when (!ct.IsCancellationRequested)
+            {
+                socket.Dispose();
+                last = ex;
+            }
+        }
+        throw last ?? new System.Net.Sockets.SocketException((int)System.Net.Sockets.SocketError.HostNotFound);
     }
 
     public static bool HasScope(ClaimsPrincipal user, string scope) =>
