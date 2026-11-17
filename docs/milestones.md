@@ -19,8 +19,9 @@ Each milestone is closed by **qa-reviewer** once every acceptance criterion has 
 - First deploy to Azure with `azd provision` + `azd deploy` (with user approval). Set up OIDC for GitHub Actions.
 - Acceptance: a guest opens the deployed URL and sees all 28 peaks with correct positions and details.
 
-## M2 Auth & conquests 🚧 (code done 2026-11-17, waiting for the External ID tenant)
-Decisions in [ADR 0003](decisions/0003-auth-and-photos.md); tenant setup in [auth-setup.md](auth-setup.md). Sign-in stays off until the four tenant values are set as GitHub variables.
+## M2 Auth & conquests ✅ (2026-11-17)
+Decisions in [ADR 0003](decisions/0003-auth-and-photos.md); tenant setup in [auth-setup.md](auth-setup.md). Verified locally and on the live site with a real External ID account (sign-in, conquest, photo upload).
+Changed from the original plan: one conquest per peak (`PUT /api/me/conquests/{slug}`), photos go through the API instead of SAS uploads, email one-time code only (Google later, no code change). Follow-ups: "delete all my data" before inviting other users, Google sign-in.
 **Owners:** architect (contract + ADR on auth/photos) → backend-dotnet, frontend-angular
 - Entra External ID sign-up/sign-in (email + Google). MSAL in the frontend, JWT bearer in the API.
 - `POST/PUT/DELETE /api/me/conquests`, upload SAS endpoint, photo validation, resize and EXIF GPS stripping.
