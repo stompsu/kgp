@@ -17,7 +17,9 @@ cd src/frontend && npm install && npx ng serve    # http://localhost:4200
 
 ## Deploy (Azure)
 ```bash
-azd provision   # creates rg-kgp-<env> with everything inside it
+az group create -n rg-kgp-dev -l polandcentral   # once per environment
+azd env set AZURE_RESOURCE_GROUP rg-kgp-dev
+azd provision   # creates everything inside the resource group
 azd deploy      # builds the API image and the web app
 # Not `azd up`: it packages the web app in parallel with provisioning,
 # before the API URL that the web build needs is known.

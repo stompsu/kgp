@@ -68,3 +68,20 @@ Backend integration tests start their own SQL Server container through Testconta
 | **Total** | **~6–8** |
 
 The container registry is now most of the bill. The free database pauses after 60 minutes idle, and the first request after that waits up to ~1 minute while it resumes. If the 100k vCore-seconds run out in a month (about 14 h at 2 vCores, or ~55 h at the 0.5 vCore minimum), the database stays paused until the 1st of the next month. You only pay if you switch it to `BillOverUsage`.
+
+## CI deploy
+
+`.github/workflows/deploy.yml` deploys `main` to the `dev` environment with GitHub OIDC. No secrets are stored.
+
+| Piece | Value |
+|---|---|
+| Deploy identity | User-assigned managed identity `id-kgp-github-dev` in `rg-kgp-dev`. It's an Azure resource, not an Entra app registration, so it lives in the resource group and can never hold a client secret |
+| Federated credential | issuer `https://token.actions.githubusercontent.com`, subject `repo:stompsu/kgp:environment:dev` |
+| Roles (scope `rg-kgp-dev` only) | **Contributor**; **Role Based Access Control Administrator**, with a condition that only allows granting or removing AcrPull, Storage Blob Data Contributor and Key Vault Secrets User |
+| Repository variables | `AZURE_CLIENT_ID` (the identity's client ID), `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_ENV_NAME=dev`, `AZURE_LOCATION=polandcentral`, `AZURE_RESOURCE_GROUP=rg-kgp-dev` |
+
+The Bicep deploys at **resource-group scope** into an existing `rg-kgp-<env>`, so CI needs no subscription-wide rights. Creating a new environment means creating its resource group first, outside CI.
+
+Each run:
+1. Copies the running API image into the fresh azd environment (`SERVICE_API_IMAGE_NAME`), so `azd provision` doesn't roll the Container App back to the placeholder.
+2. Runs `azd provision`, then `azd deploy`. The web app's upload tool is x86-only and runs fine on GitHub's Linux runners.

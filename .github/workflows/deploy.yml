@@ -1,7 +1,9 @@
 name: Deploy
 
 # Needs repository variables AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID,
-# AZURE_ENV_NAME and AZURE_LOCATION, plus an OIDC federated credential (set up in M1).
+# AZURE_ENV_NAME, AZURE_LOCATION and AZURE_RESOURCE_GROUP. AZURE_CLIENT_ID is the user-assigned managed
+# identity id-kgp-github-dev, whose federated credential trusts `repo:stompsu/kgp:environment:dev`
+# (see docs/architecture.md#ci-deploy). No secrets.
 on:
   workflow_dispatch:
   push:
@@ -24,13 +26,35 @@ jobs:
       AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
       AZURE_ENV_NAME: ${{ vars.AZURE_ENV_NAME }}
       AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
+      AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
     steps:
       - uses: actions/checkout@v4
       - uses: Azure/setup-azd@v2
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
       - name: azd login (OIDC)
         run: azd auth login --client-id "$AZURE_CLIENT_ID" --federated-credential-provider github --tenant-id "$AZURE_TENANT_ID"
+
+      - name: Prepare azd environment
+        run: |
+          azd env new "$AZURE_ENV_NAME" --subscription "$AZURE_SUBSCRIPTION_ID" --location "$AZURE_LOCATION" --no-prompt
+          azd env set AZURE_RESOURCE_GROUP "$AZURE_RESOURCE_GROUP"
+          # Runners start with an empty azd env. Carry over the running API image so provisioning
+          # doesn't roll the Container App back to the placeholder before `azd deploy` runs.
+          image=$(az containerapp list -g "$AZURE_RESOURCE_GROUP" \
+            --query "[?tags.\"azd-service-name\"=='api'] | [0].properties.template.containers[0].image" -o tsv)
+          case "$image" in
+            *.azurecr.io/*) azd env set SERVICE_API_IMAGE_NAME "$image" ;;
+          esac
+
       - run: azd provision --no-prompt
       - run: azd deploy --no-prompt

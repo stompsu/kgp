@@ -1,4 +1,6 @@
 param location string
+@description('Image deployed by azd (SERVICE_API_IMAGE_NAME). Empty on the very first provision, then a placeholder is used.')
+param image string = ''
 param tags object
 param token string
 param logAnalyticsWorkspaceName string
@@ -55,8 +57,8 @@ resource api 'Microsoft.App/containerApps@2024-03-01' = {
       containers: [
         {
           name: 'api'
-          // Placeholder listening on 8080; `azd deploy` replaces it with the built API image.
-          image: 'mcr.microsoft.com/dotnet/samples:aspnetapp'
+          // Keep the image azd deployed so re-provisioning doesn't roll the API back to a placeholder.
+          image: empty(image) ? 'mcr.microsoft.com/dotnet/samples:aspnetapp' : image
           resources: { cpu: json('0.25'), memory: '0.5Gi' }
           env: [
             { name: 'AZURE_CLIENT_ID', value: identityClientId }
