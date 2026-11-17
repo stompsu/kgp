@@ -22,6 +22,7 @@ public static class DependencyInjection
 
         services.Configure<DatabaseOptions>(configuration.GetSection("Database"));
         services.AddSingleton<DatabaseInitializer>();
+        services.AddSingleton<DatabaseReadiness>();
         services.AddHostedService<DatabaseInitializerService>();
 
         services.AddKgpPhotoStore(configuration);

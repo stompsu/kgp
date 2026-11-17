@@ -5,12 +5,13 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { routes } from './app.routes';
 import { AppConfig } from './core/app-config';
 import { AuthService, authInterceptor } from './core/auth';
+import { retryStartingInterceptor } from './core/retry-starting';
 import { provideI18n } from './core/i18n';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor, retryStartingInterceptor])),
     provideRouter(routes, withComponentInputBinding()),
     // Config first, then sign-in: MSAL must process a redirect response before the router starts.
     provideAppInitializer(() => {

@@ -34,6 +34,8 @@ Changed from the original plan: one conquest per peak (`PUT /api/me/conquests/{s
 - Offline Overpass import of `amenity=parking` and `route=hiking` near each summit into `data/osm/` and Azure SQL.
 - `GET /api/peaks/{slug}/parking`, `/trails` (GeoJSON). Map layers with a toggle, plus the Waymarked Trails overlay.
 - Acceptance: each peak shows at least one trail, or a note saying none was found; OSM/ODbL attribution is visible.
+- Status (2026-11-17): built and verified locally, not deployed yet. Import covers all 28 peaks: 280 parkings, 112 trails (Wysoka Kopa only through the 500 m fallback). The API answers `503` until seeding finishes so empty answers aren't cached.
+- Known gap: the 10 parkings nearest Rysy are all on the Slovak side; Palenica Białczańska (about 8 km) doesn't make the top 10.
 
 ## M4 Guest demo mode
 **Owner:** frontend-angular

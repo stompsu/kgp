@@ -20,6 +20,8 @@
   <ItemGroup>
     <!-- Canonical peak list lives in /data; ship it next to the app for the seeder. -->
     <None Include="../../../data/peaks.json" Link="data/peaks.json" CopyToOutputDirectory="PreserveNewest" />
+    <!-- OSM parking and trails (M3); the seeder skips them with a warning when absent. -->
+    <None Include="../../../data/osm/*.geojson" Link="data/osm/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

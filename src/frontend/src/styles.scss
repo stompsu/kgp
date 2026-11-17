@@ -91,3 +91,23 @@ body {
   outline: 3px solid var(--mat-sys-tertiary);
   outline-offset: 2px;
 }
+
+// Parking markers near the selected peak: a "P" sign, so they read without colour.
+.parking-marker {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  background: #1565c0;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 40%);
+  color: #fff;
+  font: 700 13px/1 Roboto, system-ui, sans-serif;
+}
+
+.leaflet-marker-icon:focus-visible .parking-marker {
+  outline: 3px solid var(--mat-sys-tertiary);
+  outline-offset: 2px;
+}

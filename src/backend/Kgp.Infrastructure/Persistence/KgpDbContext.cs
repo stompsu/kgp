@@ -7,6 +7,9 @@ public sealed class KgpDbContext(DbContextOptions<KgpDbContext> options) : DbCon
 {
     public DbSet<Peak> Peaks => Set<Peak>();
     public DbSet<Conquest> Conquests => Set<Conquest>();
+    public DbSet<Parking> Parkings => Set<Parking>();
+    public DbSet<Trail> Trails => Set<Trail>();
+    public DbSet<SeedState> SeedStates => Set<SeedState>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -33,6 +36,37 @@ public sealed class KgpDbContext(DbContextOptions<KgpDbContext> options) : DbCon
             conquest.Property(c => c.Notes).HasMaxLength(ConquestRules.NotesMaxLength);
             conquest.Property(c => c.PhotoBlobName).HasMaxLength(200);
             conquest.Property(c => c.PhotoTakenAt).HasColumnType("datetime2(0)");
+        });
+
+        modelBuilder.Entity<Parking>(parking =>
+        {
+            parking.ToTable("Parkings");
+            parking.HasKey(p => p.Id);
+            parking.HasIndex(p => new { p.PeakNumber, p.OsmId }).IsUnique();
+            parking.HasOne(p => p.Peak).WithMany().HasForeignKey(p => p.PeakNumber).OnDelete(DeleteBehavior.Cascade);
+            parking.Property(p => p.OsmId).HasMaxLength(40);
+            parking.Property(p => p.Name).HasMaxLength(200);
+            parking.Property(p => p.Location).HasColumnType("geography");
+        });
+
+        modelBuilder.Entity<Trail>(trail =>
+        {
+            trail.HasKey(t => t.Id);
+            trail.HasIndex(t => new { t.PeakNumber, t.OsmId }).IsUnique();
+            trail.HasOne(t => t.Peak).WithMany().HasForeignKey(t => t.PeakNumber).OnDelete(DeleteBehavior.Cascade);
+            trail.Property(t => t.OsmId).HasMaxLength(40);
+            trail.Property(t => t.Name).HasMaxLength(400);
+            trail.Property(t => t.Ref).HasMaxLength(50);
+            trail.Property(t => t.Colour).HasMaxLength(20);
+            trail.Property(t => t.Network).HasMaxLength(10);
+            trail.Property(t => t.Geometry).HasColumnType("geography");
+        });
+
+        modelBuilder.Entity<SeedState>(state =>
+        {
+            state.HasKey(s => s.Name);
+            state.Property(s => s.Name).HasMaxLength(100);
+            state.Property(s => s.ContentHash).HasMaxLength(64).IsFixedLength();
         });
     }
 }

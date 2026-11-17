@@ -35,7 +35,8 @@ public static class PeakEndpoints
         var peaks = app.MapGroup("/api/peaks")
             .WithTags("Peaks")
             .AllowAnonymous()
-            .CacheOutput(CachePolicy);
+            .CacheOutput(CachePolicy)
+            .RequireDatabaseReady();
 
         peaks.MapGet("/", async (KgpDbContext db, CancellationToken ct) =>
         {

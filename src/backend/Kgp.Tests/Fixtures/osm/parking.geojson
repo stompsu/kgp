@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [20.102624, 49.254613] },
+      "properties": { "peakSlug": "rysy", "osmId": "way/2", "name": "Parking Palenica Białczańska", "fee": true, "capacity": 300, "distanceMeters": 8370 }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [20.09, 49.19] },
+      "properties": { "peakSlug": "rysy", "osmId": "node/1", "name": null, "fee": null, "capacity": null, "distanceMeters": 1200 }
+    },
+    {
+      "type": "Feature",
+      "geometry": { "type": "Point", "coordinates": [19.95, 49.25] },
+      "properties": { "peakSlug": "giewont", "osmId": "node/3", "name": "Not a KGP peak", "fee": false, "capacity": 10, "distanceMeters": 500 }
+    }
+  ]
+}

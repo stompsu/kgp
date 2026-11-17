@@ -7,11 +7,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { PEAK_COUNT, Peak } from './peak';
 import { ConquestSectionComponent } from '../conquests/conquest-section';
+import { PeakGeoSectionComponent } from './peak-geo-section';
 import { AuthService } from '../core/auth';
 
 @Component({
   selector: 'app-peak-details',
-  imports: [ConquestSectionComponent, DecimalPipe, MatButtonModule, MatIconModule, MatExpansionModule, TranslocoPipe],
+  imports: [ConquestSectionComponent, PeakGeoSectionComponent, DecimalPipe, MatButtonModule, MatIconModule, MatExpansionModule, TranslocoPipe],
   template: `
     @let p = peak();
     <header class="head">
@@ -48,7 +49,10 @@ import { AuthService } from '../core/auth';
         </a>
       }
 
-      <p class="coming">{{ 'peak.trailsComing' | transloco }}</p>
+      <!-- Deferred: keeps the trails/parking UI out of the initial bundle. -->
+      @defer (on immediate) {
+        <app-peak-geo [slug]="p.slug" />
+      }
 
       @if (notes(); as text) {
         <mat-expansion-panel class="notes">
@@ -76,7 +80,6 @@ import { AuthService } from '../core/auth';
     .facts { margin: 0 0 16px; display: grid; gap: 8px; }
     .facts dt { font: var(--mat-sys-label-medium); color: var(--mat-sys-on-surface-variant); }
     .facts dd { margin: 0; font: var(--mat-sys-body-large); }
-    .coming { color: var(--mat-sys-on-surface-variant); font-style: italic; }
     .notes { margin: 16px 0; }
     .sources-title { font: var(--mat-sys-title-small); margin: 16px 0 4px; }
     .sources { margin: 0; padding-left: 20px; }

@@ -64,6 +64,47 @@ namespace Kgp.Infrastructure.Persistence.Migrations
                     b.ToTable("Conquests");
                 });
 
+            modelBuilder.Entity("Kgp.Domain.Parking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DistanceMeters")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("Fee")
+                        .HasColumnType("bit");
+
+                    b.Property<Point>("Location")
+                        .IsRequired()
+                        .HasColumnType("geography");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("OsmId")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<int>("PeakNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PeakNumber", "OsmId")
+                        .IsUnique();
+
+                    b.ToTable("Parkings", (string)null);
+                });
+
             modelBuilder.Entity("Kgp.Domain.Peak", b =>
                 {
                     b.Property<int>("Number")
@@ -110,12 +151,101 @@ namespace Kgp.Infrastructure.Persistence.Migrations
                     b.ToTable("Peaks");
                 });
 
+            modelBuilder.Entity("Kgp.Domain.Trail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Colour")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<Geometry>("Geometry")
+                        .IsRequired()
+                        .HasColumnType("geography");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Network")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("OsmId")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<int>("PeakNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ref")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PeakNumber", "OsmId")
+                        .IsUnique();
+
+                    b.ToTable("Trails");
+                });
+
+            modelBuilder.Entity("Kgp.Infrastructure.Persistence.SeedState", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTimeOffset>("AppliedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ContentHash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nchar(64)")
+                        .IsFixedLength();
+
+                    b.HasKey("Name");
+
+                    b.ToTable("SeedStates");
+                });
+
             modelBuilder.Entity("Kgp.Domain.Conquest", b =>
                 {
                     b.HasOne("Kgp.Domain.Peak", "Peak")
                         .WithMany()
                         .HasForeignKey("PeakNumber")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Peak");
+                });
+
+            modelBuilder.Entity("Kgp.Domain.Parking", b =>
+                {
+                    b.HasOne("Kgp.Domain.Peak", "Peak")
+                        .WithMany()
+                        .HasForeignKey("PeakNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Peak");
+                });
+
+            modelBuilder.Entity("Kgp.Domain.Trail", b =>
+                {
+                    b.HasOne("Kgp.Domain.Peak", "Peak")
+                        .WithMany()
+                        .HasForeignKey("PeakNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Peak");

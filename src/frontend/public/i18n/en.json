@@ -6,7 +6,13 @@
     "switchTo": "Polski"
   },
   "map": {
-    "label": "Map of the Crown of Polish Mountains peaks"
+    "label": "Map of the Crown of Polish Mountains peaks",
+    "layers": {
+      "control": "Map layers",
+      "trails": "Trails",
+      "parking": "Parking",
+      "waymarked": "Waymarked Trails"
+    }
   },
   "peaks": {
     "listTitle": "28 peaks",
@@ -28,7 +34,6 @@
     "sources": "Sources",
     "close": "Close",
     "backToList": "All peaks",
-    "trailsComing": "Trails and parking are coming soon.",
     "conquered": "conquered"
   },
   "auth": {
@@ -107,5 +112,47 @@
     "nextMultiYear": "Next 24 years",
     "chooseDate": "Choose date",
     "chooseMonthYear": "Choose month and year"
+  },
+  "geo": {
+    "trailsTitle": "Trails",
+    "parkingTitle": "Parking",
+    "trailsLoading": "Loading trails…",
+    "parkingLoading": "Loading parking…",
+    "trailsError": "Couldn't load the trails.",
+    "parkingError": "Couldn't load the parking.",
+    "noTrails": "No trails found in OpenStreetMap near the summit.",
+    "noParking": "No parking found in OpenStreetMap within 10 km of the summit.",
+    "unnamedTrail": "Unnamed trail",
+    "unnamedParking": "Unnamed parking",
+    "colourLabel": "Colour: {{colour}}",
+    "colour": {
+      "red": "red",
+      "blue": "blue",
+      "green": "green",
+      "yellow": "yellow",
+      "black": "black",
+      "unknown": "unknown"
+    },
+    "ref": "Ref: {{ref}}",
+    "network": {
+      "iwn": "international trail",
+      "nwn": "national trail",
+      "rwn": "regional trail",
+      "lwn": "local trail"
+    },
+    "distance": "{{km}} km from the summit as the crow flies",
+    "fee": {
+      "paid": "paid",
+      "free": "free",
+      "unknown": "fee: no data"
+    },
+    "capacity": "spaces: {{count}}",
+    "navigate": "Directions",
+    "navigateTo": "Directions to: {{name}} (OpenStreetMap, new tab)",
+    "osmObject": "View in OSM",
+    "osmObjectOf": "{{name}} in OpenStreetMap (new tab)",
+    "dataPrefix": "Data: ©",
+    "osmContributors": "OpenStreetMap contributors",
+    "odbl": "ODbL licence"
   }
 }

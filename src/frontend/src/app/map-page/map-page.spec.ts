@@ -15,6 +15,8 @@ class MapStub {
   readonly label = input('');
   readonly conquered = input<ReadonlySet<string>>(new Set());
   readonly conqueredLabel = input('');
+  readonly trails = input<unknown[]>([]);
+  readonly parking = input<unknown[]>([]);
 }
 
 const rysy: Peak = {

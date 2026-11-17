@@ -7,6 +7,7 @@ import { MapComponent } from '../map/map';
 import { PeakListComponent } from '../peaks/peak-list';
 import { PeakDetailsComponent } from '../peaks/peak-details';
 import { PeaksService } from '../peaks/peak';
+import { PeakGeoService } from '../peaks/peak-geo';
 import { AuthService } from '../core/auth';
 import { ConquestsService } from '../conquests/conquest';
 
@@ -24,6 +25,8 @@ const WAKING_HINT_AFTER_MS = 4000;
         [label]="'map.label' | transloco"
         [conquered]="conquered()"
         [conqueredLabel]="'peak.conquered' | transloco"
+        [trails]="geo.trailFeatures()"
+        [parking]="geo.parkingFeatures()"
         (peakSelected)="select($event)" />
     </section>
 
@@ -81,6 +84,7 @@ export class MapPage {
   private readonly router = inject(Router);
   protected readonly auth = inject(AuthService);
   protected readonly conquered = inject(ConquestsService).conqueredSlugs;
+  protected readonly geo = inject(PeakGeoService);
 
   /** Safe read: `resource.value()` throws while the resource is in an error state. */
   protected readonly list = computed(() => (this.peaks.hasValue() ? this.peaks.value() : []));
@@ -88,6 +92,8 @@ export class MapPage {
   protected readonly waking = signal(false);
 
   constructor() {
+    // Trails and parking follow the selection; an unknown slug loads nothing.
+    effect(() => this.geo.slug.set(this.selected()?.slug ?? null));
     effect((onCleanup) => {
       if (!this.peaks.isLoading()) {
         this.waking.set(false);

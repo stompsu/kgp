@@ -36,6 +36,7 @@ app.MapGet("/health", () => Results.Ok(new { status = "ok" }))
    .WithName("Health");
 
 app.MapPeakEndpoints();
+app.MapOsmEndpoints();
 app.MapConquestEndpoints();
 
 app.Run();

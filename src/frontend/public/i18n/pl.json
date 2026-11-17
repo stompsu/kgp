@@ -6,7 +6,13 @@
     "switchTo": "English"
   },
   "map": {
-    "label": "Mapa szczytów Korony Gór Polski"
+    "label": "Mapa szczytów Korony Gór Polski",
+    "layers": {
+      "control": "Warstwy mapy",
+      "trails": "Szlaki",
+      "parking": "Parkingi",
+      "waymarked": "Waymarked Trails"
+    }
   },
   "peaks": {
     "listTitle": "28 szczytów",
@@ -28,7 +34,6 @@
     "sources": "Źródła",
     "close": "Zamknij",
     "backToList": "Wszystkie szczyty",
-    "trailsComing": "Szlaki i parkingi pojawią się wkrótce.",
     "conquered": "zdobyty"
   },
   "auth": {
@@ -107,5 +112,47 @@
     "nextMultiYear": "Następne 24 lata",
     "chooseDate": "Wybierz datę",
     "chooseMonthYear": "Wybierz miesiąc i rok"
+  },
+  "geo": {
+    "trailsTitle": "Szlaki",
+    "parkingTitle": "Parkingi",
+    "trailsLoading": "Wczytywanie szlaków…",
+    "parkingLoading": "Wczytywanie parkingów…",
+    "trailsError": "Nie udało się wczytać szlaków.",
+    "parkingError": "Nie udało się wczytać parkingów.",
+    "noTrails": "Nie znaleziono szlaków w OpenStreetMap w pobliżu szczytu.",
+    "noParking": "Nie znaleziono parkingów w OpenStreetMap w promieniu 10 km od szczytu.",
+    "unnamedTrail": "Szlak bez nazwy",
+    "unnamedParking": "Parking bez nazwy",
+    "colourLabel": "Kolor: {{colour}}",
+    "colour": {
+      "red": "czerwony",
+      "blue": "niebieski",
+      "green": "zielony",
+      "yellow": "żółty",
+      "black": "czarny",
+      "unknown": "nieznany"
+    },
+    "ref": "Oznaczenie: {{ref}}",
+    "network": {
+      "iwn": "szlak międzynarodowy",
+      "nwn": "szlak krajowy",
+      "rwn": "szlak regionalny",
+      "lwn": "szlak lokalny"
+    },
+    "distance": "{{km}} km od szczytu w linii prostej",
+    "fee": {
+      "paid": "płatny",
+      "free": "bezpłatny",
+      "unknown": "opłata: brak danych"
+    },
+    "capacity": "miejsc: {{count}}",
+    "navigate": "Nawiguj",
+    "navigateTo": "Nawiguj do: {{name}} (OpenStreetMap, nowa karta)",
+    "osmObject": "Zobacz w OSM",
+    "osmObjectOf": "{{name}} w OpenStreetMap (nowa karta)",
+    "dataPrefix": "Dane: ©",
+    "osmContributors": "współtwórcy OpenStreetMap",
+    "odbl": "licencja ODbL"
   }
 }

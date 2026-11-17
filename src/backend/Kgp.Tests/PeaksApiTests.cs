@@ -5,8 +5,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Kgp.Tests;
 
+/// <summary>Read-only peak data (peaks, parking, trails) shares one SQL container; SQL Server is slow to start.</summary>
+[CollectionDefinition(Name)]
+public sealed class PeaksCollection : ICollectionFixture<KgpApiFactory>
+{
+    public const string Name = "Peaks API";
+}
+
 [Trait("Category", "Integration")]
-public class PeaksApiTests(KgpApiFactory factory) : IClassFixture<KgpApiFactory>
+[Collection(PeaksCollection.Name)]
+public class PeaksApiTests(KgpApiFactory factory)
 {
     [Fact]
     public async Task List_returns_28_peaks_ordered_by_number_with_coordinates()

@@ -7,6 +7,9 @@ import { Peak } from './peak';
 import { getTranslocoModule } from '../testing/transloco-testing';
 import { AuthService } from '../core/auth';
 import { Conquest, ConquestsService } from '../conquests/conquest';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { PeakGeoService } from './peak-geo';
 
 const skopiec: Peak = {
   number: 3,
@@ -38,6 +41,8 @@ describe('PeakDetailsComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PeakDetailsComponent, getTranslocoModule()],
       providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
         { provide: AuthService, useValue: { isSignedIn: signedIn, enabled: signedIn } },
         {
           provide: ConquestsService,
@@ -131,6 +136,123 @@ describe('PeakDetailsComponent', () => {
 
       fixture.destroy();
       expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:photo');
+    });
+  });
+
+  describe('trails and parking', () => {
+    const trailsUrl = 'http://localhost:5080/api/peaks/skopiec/trails';
+    const parkingUrl = 'http://localhost:5080/api/peaks/skopiec/parking';
+    const collection = (features: unknown[]) => ({ type: 'FeatureCollection', features });
+
+    async function renderSelected() {
+      const fixture = await render(skopiec);
+      TestBed.inject(PeakGeoService).slug.set('skopiec');
+      // No whenStable here: pending requests keep the app unstable until they're flushed.
+      TestBed.tick();
+      return { fixture, http: TestBed.inject(HttpTestingController), el: fixture.nativeElement as HTMLElement };
+    }
+
+    async function settle(fixture: { whenStable(): Promise<unknown>; detectChanges(): void }) {
+      fixture.detectChanges();
+      await fixture.whenStable();
+    }
+
+    it('lists trails with colour, ref and network as text, and parking with distance, fee and links', async () => {
+      const { fixture, http, el } = await renderSelected();
+      http.expectOne(trailsUrl).flush(
+        collection([
+          {
+            type: 'Feature',
+            geometry: { type: 'MultiLineString', coordinates: [[[15.88, 50.94], [15.89, 50.95]]] },
+            properties: { osmId: 'relation/2149829', name: 'Szlak czerwony: Wojcieszów – Skopiec', ref: 'GSS', colour: 'red', network: 'rwn' },
+          },
+          {
+            type: 'Feature',
+            geometry: { type: 'MultiLineString', coordinates: [[[15.88, 50.94], [15.87, 50.93]]] },
+            properties: { osmId: 'relation/2', name: null, ref: null, colour: null, network: null },
+          },
+        ]),
+      );
+      http.expectOne(parkingUrl).flush(
+        collection([
+          {
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: [15.87012, 50.93461] },
+            properties: { osmId: 'way/123456', name: 'Parking pod Skopcem', fee: true, capacity: 30, distanceMeters: 1449 },
+          },
+          {
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: [15.9, 50.95] },
+            properties: { osmId: 'node/7', name: null, fee: null, capacity: null, distanceMeters: 2051 },
+          },
+        ]),
+      );
+      await settle(fixture);
+
+      const trails = [...el.querySelectorAll('.trails li')].map((li) => li.textContent!.replace(/\s+/g, ' ').trim());
+      expect(trails[0]).toContain('Szlak czerwony: Wojcieszów – Skopiec');
+      expect(trails[0]).toContain('Kolor: czerwony');
+      expect(trails[0]).toContain('Oznaczenie: GSS');
+      expect(trails[0]).toContain('szlak regionalny');
+      expect(trails[1]).toContain('Szlak bez nazwy');
+      expect(trails[1]).toContain('Kolor: nieznany');
+
+      const parking = [...el.querySelectorAll('.parking li')];
+      const first = parking[0].textContent!.replace(/\s+/g, ' ');
+      expect(first).toContain('Parking pod Skopcem');
+      expect(first).toContain('1,4 km od szczytu w linii prostej');
+      expect(first).toContain('płatny');
+      expect(first).toContain('miejsc: 30');
+      const links = [...parking[0].querySelectorAll('a')].map((a) => a.getAttribute('href'));
+      expect(links).toEqual([
+        'https://www.openstreetmap.org/directions?to=50.93461,15.87012',
+        'https://www.openstreetmap.org/way/123456',
+      ]);
+      expect(parking[0].querySelector('a')!.textContent).toContain('Nawiguj');
+      const second = parking[1].textContent!.replace(/\s+/g, ' ');
+      expect(second).toContain('Parking bez nazwy');
+      expect(second).toContain('opłata: brak danych');
+      expect(second).not.toContain('miejsc');
+
+      const attribution = el.querySelector('.attribution')!;
+      expect(attribution.textContent!.replace(/\s+/g, ' ')).toContain('Dane: © współtwórcy OpenStreetMap, licencja ODbL');
+      expect(attribution.querySelector('a')!.getAttribute('href')).toBe('https://www.openstreetmap.org/copyright');
+      http.verify();
+    });
+
+    it('says so when OSM has no trails or parking near the peak, and still credits OSM', async () => {
+      const { fixture, http, el } = await renderSelected();
+      http.expectOne(trailsUrl).flush(collection([]));
+      http.expectOne(parkingUrl).flush(collection([]));
+      await settle(fixture);
+
+      expect(el.textContent).toContain('Nie znaleziono szlaków w OpenStreetMap w pobliżu szczytu.');
+      expect(el.textContent).toContain('Nie znaleziono parkingów w OpenStreetMap w promieniu 10 km od szczytu.');
+      expect(el.querySelector('.attribution')).not.toBeNull();
+    });
+
+    it('shows an error with a working retry', async () => {
+      const { fixture, http, el } = await renderSelected();
+      http.expectOne(trailsUrl).error(new ProgressEvent('error'));
+      http.expectOne(parkingUrl).flush(collection([]));
+      await settle(fixture);
+
+      const alert = el.querySelector('.trails [role=alert]')!;
+      expect(alert.textContent).toContain('Nie udało się wczytać szlaków.');
+
+      alert.querySelector('button')!.click();
+      TestBed.tick();
+      http.expectOne(trailsUrl).flush(collection([]));
+      await settle(fixture);
+
+      expect(el.textContent).toContain('Nie znaleziono szlaków w OpenStreetMap w pobliżu szczytu.');
+    });
+
+    it('stays empty and fetches nothing until the peak is selected', async () => {
+      const el = (await render(skopiec)).nativeElement as HTMLElement;
+
+      TestBed.inject(HttpTestingController).expectNone(() => true);
+      expect(el.querySelector('.attribution')).toBeNull();
     });
   });
 });
