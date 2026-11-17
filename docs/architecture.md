@@ -76,7 +76,7 @@ The container registry is now most of the bill. The free database pauses after 6
 | Piece | Value |
 |---|---|
 | Deploy identity | User-assigned managed identity `id-kgp-github-dev` in `rg-kgp-dev`. It's an Azure resource, not an Entra app registration, so it lives in the resource group and can never hold a client secret |
-| Federated credential | issuer `https://token.actions.githubusercontent.com`, subject `repo:stompsu/kgp:environment:dev` |
+| Federated credential | issuer `https://token.actions.githubusercontent.com`, subject `repo:stompsu@12047598/kgp@1461006413:environment:dev`. GitHub's ID-based subject format: it pins the owner and repo IDs, so a renamed or re-created repo with the same name isn't trusted |
 | Roles (scope `rg-kgp-dev` only) | **Contributor**; **Role Based Access Control Administrator**, with a condition that only allows granting or removing AcrPull, Storage Blob Data Contributor and Key Vault Secrets User |
 | Repository variables | `AZURE_CLIENT_ID` (the identity's client ID), `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_ENV_NAME=dev`, `AZURE_LOCATION=polandcentral`, `AZURE_RESOURCE_GROUP=rg-kgp-dev` |
 

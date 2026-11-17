@@ -2,7 +2,8 @@ name: Deploy
 
 # Needs repository variables AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID,
 # AZURE_ENV_NAME, AZURE_LOCATION and AZURE_RESOURCE_GROUP. AZURE_CLIENT_ID is the user-assigned managed
-# identity id-kgp-github-dev, whose federated credential trusts `repo:stompsu/kgp:environment:dev`
+# identity id-kgp-github-dev, whose federated credential trusts
+# `repo:stompsu@12047598/kgp@1461006413:environment:dev` (GitHub's ID-based OIDC subject)
 # (see docs/architecture.md#ci-deploy). No secrets.
 on:
   workflow_dispatch:
