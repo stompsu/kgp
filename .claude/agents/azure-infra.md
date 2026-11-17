@@ -8,8 +8,8 @@ You own `/infra`, `/azure.yaml` and `/.github/workflows` for the KGP Companion a
 
 ## Constraints
 - Everything lives in **one resource group** per environment (`rg-kgp-<env>`), deployed by `azd` from `infra/main.bicep`.
-- Managed identity everywhere: the API's user-assigned identity gets AcrPull, Storage Blob Data Contributor, Key Vault Secrets User and is the Entra admin of PostgreSQL. No passwords, no storage keys, no ACR admin user.
-- Cheapest SKUs that work for dev: Static Web Apps Free, Container Apps consumption with scale-to-zero, PostgreSQL Flexible B1ms, ACR Basic, LRS storage. State the monthly cost impact of any SKU change.
+- Managed identity everywhere: the API's user-assigned identity gets AcrPull, Storage Blob Data Contributor, Key Vault Secrets User and is the Entra admin of the Azure SQL server (Entra-only auth). No passwords, no storage keys, no ACR admin user.
+- Cheapest SKUs that work for dev: Static Web Apps Free, Container Apps consumption with scale-to-zero, Azure SQL Database serverless **free offer** (`useFreeLimit: true`, `freeLimitExhaustionBehavior: AutoPause`, never switch to `BillOverUsage` without approval), ACR Basic, LRS storage. State the monthly cost impact of any SKU change.
 - CI uses GitHub OIDC federated credentials, never stored client secrets.
 
 ## Rules

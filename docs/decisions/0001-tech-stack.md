@@ -1,6 +1,6 @@
 # 0001: Tech stack and hosting
 
-**Status:** accepted (M0)
+**Status:** accepted (M0). The database choice is superseded by [0002](0002-azure-sql-free-serverless.md)
 
 ## Context
 Hobby-scale app for KGP participants. It needs a map with spatial data (peaks, trails, parking), user accounts, photo storage and a small Azure bill. Everything sits in one resource group.
@@ -10,7 +10,7 @@ Hobby-scale app for KGP participants. It needs a map with spatial data (peaks, t
 - Angular (latest) on Static Web Apps Free.
 - PostgreSQL Flexible + PostGIS rather than Azure SQL: better geo tooling (GeoJSON, NetTopologySuite) and a cheap Burstable tier.
 - Microsoft Entra External ID for customer accounts.
-- Managed identity for all service-to-service access; storage shared keys and Postgres passwords are disabled.
+- Managed identity for all service-to-service access; storage shared keys and database passwords are disabled.
 - Leaflet + OpenStreetMap; trails and parking are imported from OSM offline, not queried live.
 
 ## Consequences

@@ -10,9 +10,8 @@ param registryLoginServer string
 param allowedOrigin string
 param blobEndpoint string
 param keyVaultUri string
-param postgresHost string
-param postgresDatabase string
-param postgresUser string
+param sqlServerFqdn string
+param sqlDatabase string
 
 resource workspace 'Microsoft.OperationalInsights/workspaces@2023-09-01' existing = {
   name: logAnalyticsWorkspaceName
@@ -65,7 +64,7 @@ resource api 'Microsoft.App/containerApps@2024-03-01' = {
             { name: 'Cors__AllowedOrigins__0', value: allowedOrigin }
             { name: 'Storage__BlobEndpoint', value: blobEndpoint }
             { name: 'KeyVault__Uri', value: keyVaultUri }
-            { name: 'ConnectionStrings__Kgp', value: 'Host=${postgresHost};Database=${postgresDatabase};Username=${postgresUser};Ssl Mode=Require' }
+            { name: 'ConnectionStrings__Kgp', value: 'Server=tcp:${sqlServerFqdn},1433;Database=${sqlDatabase};Authentication=Active Directory Managed Identity;User Id=${identityClientId};Encrypt=True;Connect Timeout=60' }
           ]
           probes: [
             { type: 'Liveness', httpGet: { path: '/health', port: 8080 } }

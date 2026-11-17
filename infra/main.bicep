@@ -45,14 +45,14 @@ module keyVault 'modules/keyvault.bicep' = {
   params: { location: location, tags: tags, token: token, readerPrincipalId: identity.outputs.principalId }
 }
 
-module postgres 'modules/postgres.bicep' = {
+module sql 'modules/sql.bicep' = {
   scope: rg
   params: {
     location: location
     tags: tags
     token: token
-    adminPrincipalId: identity.outputs.principalId
-    adminPrincipalName: identity.outputs.name
+    adminName: identity.outputs.name
+    adminClientId: identity.outputs.clientId
   }
 }
 
@@ -75,9 +75,8 @@ module api 'modules/containerapp.bicep' = {
     allowedOrigin: 'https://${web.outputs.defaultHostname}'
     blobEndpoint: storage.outputs.blobEndpoint
     keyVaultUri: keyVault.outputs.uri
-    postgresHost: postgres.outputs.host
-    postgresDatabase: postgres.outputs.databaseName
-    postgresUser: identity.outputs.name
+    sqlServerFqdn: sql.outputs.fqdn
+    sqlDatabase: sql.outputs.databaseName
   }
 }
 

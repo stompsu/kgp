@@ -10,7 +10,7 @@ Each milestone is closed by **qa-reviewer** once every acceptance criterion has 
 ## M1 Walking skeleton
 **Owners:** geo-data-curator → backend-dotnet → frontend-angular → azure-infra
 - geo-data-curator fills verified coordinates for all 28 peaks in `data/peaks.json`, with sources.
-- EF Core + PostGIS model, seeder, `GET /api/peaks`, `GET /api/peaks/{slug}` (anonymous).
+- EF Core + Azure SQL (`geography`) model, seeder, `GET /api/peaks`, `GET /api/peaks/{slug}` (anonymous).
 - Map shows 28 markers; clicking one opens a details panel with name, range, height, coordinates and description. Add Angular Material and i18n (pl/en).
 - First deploy to Azure with `azd up` (with user approval). Set up OIDC for GitHub Actions.
 - Acceptance: a guest opens the deployed URL and sees all 28 peaks with correct positions and details.
@@ -25,7 +25,7 @@ Each milestone is closed by **qa-reviewer** once every acceptance criterion has 
 
 ## M3 Trails & parking
 **Owners:** geo-data-curator → backend-dotnet → frontend-angular
-- Offline Overpass import of `amenity=parking` and `route=hiking` near each summit into `data/osm/` and PostGIS.
+- Offline Overpass import of `amenity=parking` and `route=hiking` near each summit into `data/osm/` and Azure SQL.
 - `GET /api/peaks/{slug}/parking`, `/trails` (GeoJSON). Map layers with a toggle, plus the Waymarked Trails overlay.
 - Acceptance: each peak shows at least one trail, or a note saying none was found; OSM/ODbL attribution is visible.
 
