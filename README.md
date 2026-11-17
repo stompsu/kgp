@@ -17,7 +17,10 @@ cd src/frontend && npm install && npx ng serve    # http://localhost:4200
 
 ## Deploy (Azure)
 ```bash
-azd up   # creates rg-kgp-<env> with everything inside it
+azd provision   # creates rg-kgp-<env> with everything inside it
+azd deploy      # builds the API image and the web app
+# Not `azd up`: it packages the web app in parallel with provisioning,
+# before the API URL that the web build needs is known.
 ```
 
 See [docs/architecture.md](docs/architecture.md) and [docs/milestones.md](docs/milestones.md).

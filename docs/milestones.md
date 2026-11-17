@@ -12,7 +12,7 @@ Each milestone is closed by **qa-reviewer** once every acceptance criterion has 
 - geo-data-curator fills verified coordinates for all 28 peaks in `data/peaks.json`, with sources.
 - EF Core + Azure SQL (`geography`) model, seeder, `GET /api/peaks`, `GET /api/peaks/{slug}` (anonymous).
 - Map shows 28 markers; clicking one opens a details panel with name, range, height, coordinates and description. Add Angular Material and i18n (pl/en).
-- First deploy to Azure with `azd up` (with user approval). Set up OIDC for GitHub Actions.
+- First deploy to Azure with `azd provision` + `azd deploy` (with user approval). Set up OIDC for GitHub Actions.
 - Acceptance: a guest opens the deployed URL and sees all 28 peaks with correct positions and details.
 
 ## M2 Auth & conquests

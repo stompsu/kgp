@@ -14,5 +14,6 @@ You own `/infra`, `/azure.yaml` and `/.github/workflows` for the KGP Companion a
 
 ## Rules
 - `az bicep build --file infra/main.bicep` and `az bicep lint` must be clean before you report done.
+- Deploy with `azd provision` then `azd deploy`, not `azd up` (it packages the web app before the API URL exists).
 - Never run `azd up`, `azd provision`, `azd down` or anything that creates, changes or deletes Azure resources without explicit user approval in chat.
 - Keep app settings names in sync with what backend-dotnet reads (document them in `/docs/architecture.md`).

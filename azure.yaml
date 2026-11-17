@@ -5,12 +5,12 @@ infra:
   path: infra
 services:
   api:
-    project: src/backend
+    project: src/backend/Kgp.Api
     language: dotnet
     host: containerapp
     docker:
-      path: Dockerfile
-      context: ../..   # repo root, so the image can include data/peaks.json
+      path: ../Dockerfile       # src/backend/Dockerfile
+      context: ../../..         # repo root, so the image can include data/peaks.json
   web:
     project: src/frontend
     language: js
