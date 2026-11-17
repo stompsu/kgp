@@ -19,6 +19,9 @@
     },
     "apiClientId": {
       "value": "${KGP_API_CLIENT_ID=}"
+    },
+    "webCustomDomain": {
+      "value": "${KGP_WEB_CUSTOM_DOMAIN=}"
     }
   }
 }

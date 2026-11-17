@@ -17,6 +17,9 @@ param apiImage string = ''
 @description('Static Web Apps is available in a limited set of regions.')
 param staticWebAppLocation string = 'westeurope'
 
+@description('Optional custom domain for the web app, e.g. a subdomain (KGP_WEB_CUSTOM_DOMAIN). Its CNAME must point at the Static Web App before provisioning. Empty = default hostname only.')
+param webCustomDomain string = ''
+
 // Sign-in (ADR 0003). The Entra External ID tenant lives outside azd (rg-kgp-identity, docs/auth-setup.md).
 // All empty until it exists, which keeps sign-in off. None of these are secrets.
 @description('Entra External ID tenant ID (KGP_AUTH_TENANT_ID).')
@@ -31,6 +34,8 @@ param apiClientId string = ''
 var tags = { 'azd-env-name': environmentName, app: 'kgp' }
 var authEnabled = !empty(authTenantId) && !empty(authTenantSubdomain) && !empty(apiClientId)
 var token = toLower(uniqueString(subscription().id, environmentName, location))
+var webDefaultOrigin = 'https://${web.outputs.defaultHostname}'
+var webOrigins = empty(webCustomDomain) ? [ webDefaultOrigin ] : [ webDefaultOrigin, 'https://${webCustomDomain}' ]
 
 module monitoring 'modules/monitoring.bicep' = {
   params: { location: location, tags: tags, token: token }
@@ -63,7 +68,7 @@ module sql 'modules/sql.bicep' = {
 }
 
 module web 'modules/staticwebapp.bicep' = {
-  params: { location: staticWebAppLocation, tags: tags, token: token }
+  params: { location: staticWebAppLocation, tags: tags, token: token, customDomain: webCustomDomain }
 }
 
 module api 'modules/containerapp.bicep' = {
@@ -77,7 +82,7 @@ module api 'modules/containerapp.bicep' = {
     identityId: identity.outputs.id
     identityClientId: identity.outputs.clientId
     registryLoginServer: registry.outputs.loginServer
-    allowedOrigin: 'https://${web.outputs.defaultHostname}'
+    allowedOrigins: webOrigins
     blobEndpoint: storage.outputs.blobEndpoint
     keyVaultUri: keyVault.outputs.uri
     sqlServerFqdn: sql.outputs.fqdn
@@ -89,4 +94,6 @@ module api 'modules/containerapp.bicep' = {
 
 output AZURE_CONTAINER_REGISTRY_ENDPOINT string = registry.outputs.loginServer
 output API_BASE_URL string = api.outputs.url
-output WEB_URL string = 'https://${web.outputs.defaultHostname}'
+// WEB_URL is the public URL: the custom domain when set. WEB_DEFAULT_URL is always the *.azurestaticapps.net one.
+output WEB_URL string = empty(webCustomDomain) ? webDefaultOrigin : 'https://${webCustomDomain}'
+output WEB_DEFAULT_URL string = webDefaultOrigin

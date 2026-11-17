@@ -8,6 +8,8 @@ name: Deploy
 # Optional repository variables for sign-in (docs/auth-setup.md): KGP_AUTH_TENANT_ID,
 # KGP_AUTH_TENANT_SUBDOMAIN, KGP_API_CLIENT_ID, KGP_SPA_CLIENT_ID. They are IDs, not secrets.
 # Until all four are set, the API and web app run with sign-in off.
+# Optional repository variable KGP_WEB_CUSTOM_DOMAIN (e.g. a subdomain): binds it to the Static Web App
+# and adds it to the API's CORS origins. Its CNAME must point at the SWA default hostname first.
 on:
   workflow_dispatch:
   push:
@@ -35,6 +37,7 @@ jobs:
       KGP_AUTH_TENANT_SUBDOMAIN: ${{ vars.KGP_AUTH_TENANT_SUBDOMAIN }}
       KGP_API_CLIENT_ID: ${{ vars.KGP_API_CLIENT_ID }}
       KGP_SPA_CLIENT_ID: ${{ vars.KGP_SPA_CLIENT_ID }}
+      KGP_WEB_CUSTOM_DOMAIN: ${{ vars.KGP_WEB_CUSTOM_DOMAIN }}
     steps:
       - uses: actions/checkout@v4
       - uses: Azure/setup-azd@v2
@@ -63,8 +66,8 @@ jobs:
           case "$image" in
             *.azurecr.io/*) azd env set SERVICE_API_IMAGE_NAME "$image" ;;
           esac
-          # Sign-in settings: read by Bicep (main.parameters.json) and by the web prepackage hook.
-          for name in KGP_AUTH_TENANT_ID KGP_AUTH_TENANT_SUBDOMAIN KGP_API_CLIENT_ID KGP_SPA_CLIENT_ID; do
+          # Sign-in settings and custom domain: read by Bicep (main.parameters.json); sign-in also by the web prepackage hook.
+          for name in KGP_AUTH_TENANT_ID KGP_AUTH_TENANT_SUBDOMAIN KGP_API_CLIENT_ID KGP_SPA_CLIENT_ID KGP_WEB_CUSTOM_DOMAIN; do
             value=$(printenv "$name" || true)
             if [ -n "$value" ]; then azd env set "$name" "$value"; fi
           done

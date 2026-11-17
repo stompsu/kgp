@@ -57,7 +57,7 @@ Backend integration tests start their own SQL Server container through Testconta
 | `ConnectionStrings__Kgp` | SqlClient connection string with `Authentication=Active Directory Managed Identity`. No password |
 | `Storage__BlobEndpoint` | Blob endpoint for photos |
 | `KeyVault__Uri` | Key Vault URI |
-| `Cors__AllowedOrigins__0` | Static Web App origin |
+| `Cors__AllowedOrigins__0`, `__1`, ... | Static Web App origins: the default `*.azurestaticapps.net` hostname always, plus `https://<KGP_WEB_CUSTOM_DOMAIN>` when that azd env var is set |
 | `Auth__Authority` | `https://<sub>.ciamlogin.com/<tenant-id>/v2.0`, from azd env `KGP_AUTH_TENANT_SUBDOMAIN` + `KGP_AUTH_TENANT_ID`. Empty = sign-in off |
 | `Auth__Audience` | `kgp-api` client ID, from azd env `KGP_API_CLIENT_ID`. Empty = sign-in off |
 | `APPLICATIONINSIGHTS_CONNECTION_STRING` | Telemetry |
@@ -88,10 +88,11 @@ The API container has 0.5 vCPU / 1 GiB (raised from 0.25 / 0.5 GiB in M2 because
 | Federated credential | issuer `https://token.actions.githubusercontent.com`, subject `repo:stompsu@12047598/kgp@1461006413:environment:dev`. GitHub's ID-based subject format: it pins the owner and repo IDs, so a renamed or re-created repo with the same name isn't trusted |
 | Roles (scope `rg-kgp-dev` only) | **Contributor**; **Role Based Access Control Administrator**, with a condition that only allows granting or removing AcrPull, Storage Blob Data Contributor and Key Vault Secrets User |
 | Repository variables | `AZURE_CLIENT_ID` (the identity's client ID), `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`, `AZURE_ENV_NAME=dev`, `AZURE_LOCATION=polandcentral`, `AZURE_RESOURCE_GROUP=rg-kgp-dev` |
+| Optional custom domain | `KGP_WEB_CUSTOM_DOMAIN` (e.g. `kgp.highpace.dev` for dev). Binds the domain to the Static Web App (CNAME delegation, free managed certificate) and adds it to the API's CORS origins; Bicep output `WEB_URL` then points at it (`WEB_DEFAULT_URL` keeps the default hostname). Create the DNS record `CNAME <domain> -> <SWA default hostname>` **before** setting it, or provisioning fails validation. A domain can be bound to only one Static Web App, so set it per environment |
 | Optional sign-in variables | `KGP_AUTH_TENANT_ID`, `KGP_AUTH_TENANT_SUBDOMAIN`, `KGP_API_CLIENT_ID`, `KGP_SPA_CLIENT_ID` ([auth-setup.md](auth-setup.md)). IDs, not secrets. Note `AZURE_TENANT_ID` stays the Azure (workforce) tenant; the External ID tenant is a different one |
 
 The Bicep deploys at **resource-group scope** into an existing `rg-kgp-<env>`, so CI needs no subscription-wide rights. Creating a new environment means creating its resource group first, outside CI.
 
 Each run:
-1. Copies the running API image into the fresh azd environment (`SERVICE_API_IMAGE_NAME`), so `azd provision` doesn't roll the Container App back to the placeholder, and copies the non-empty `KGP_*` sign-in variables into it with `azd env set` (read by Bicep and by the web prepackage hook).
+1. Copies the running API image into the fresh azd environment (`SERVICE_API_IMAGE_NAME`), so `azd provision` doesn't roll the Container App back to the placeholder, and copies the non-empty `KGP_*` sign-in and custom-domain variables into it with `azd env set` (read by Bicep and by the web prepackage hook).
 2. Runs `azd provision`, then `azd deploy`. The web app's upload tool is x86-only and runs fine on GitHub's Linux runners.

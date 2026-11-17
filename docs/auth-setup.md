@@ -22,7 +22,7 @@ Switch to the new tenant (top-right → Switch directory), then **App registrati
 **App registrations** → **New registration**:
 1. Name `kgp-spa`, accounts in this organizational directory only.
 2. Redirect URI: platform **Single-page application (SPA)**, `http://localhost:4200` → Register.
-3. **Authentication** → under the SPA platform add `https://happy-dune-066863c03.8.azurestaticapps.net` → Save. Leave implicit grant off.
+3. **Authentication** → under the SPA platform add `https://happy-dune-066863c03.8.azurestaticapps.net` and, if `KGP_WEB_CUSTOM_DOMAIN` is set, the custom domain too (`https://kgp.highpace.dev`) → Save. Leave implicit grant off. MSAL redirects to `window.location.origin`, so every origin users open the app on must be listed.
 4. **API permissions** → Add a permission → **APIs my organization uses** → `kgp-api` → `Conquests.ReadWrite` → Add. Then **Grant admin consent for KGP Companion**.
 
 ## 4. User flow (email one-time code)
