@@ -28,6 +28,22 @@ Browser ──► Static Web App (Angular)
 - **Peaks and map**: the 28 peaks are seeded from `data/peaks.json`. Parking and trails are imported offline from OSM into Azure SQL `geography` columns (M3) and served by the API as GeoJSON.
 - **Conquest**: the user requests an upload SAS from the API, the browser uploads the photo directly to Blob, then posts the conquest (date, notes, blob name). The API validates the blob, resizes it, strips EXIF GPS from the served copy and keeps the capture date.
 - **Guest/demo**: the frontend keeps demo conquests in `localStorage`. Nothing is sent to the API.
+- **Startup**: the API serves `/health` straight away. A background service applies EF Core migrations and upserts the peaks from `data/peaks.json` (bundled into the image). The database may take up to about a minute to resume, so EF uses retry-on-failure. The frontend shows a "waking up" message after 4 seconds.
+- **Frontend config**: one build works for every environment. At deploy time, azd's `prepackage` hook (`infra/hooks/write-web-config.sh`) writes `public/runtime-config.json` with the API URL, and the app loads it before bootstrapping. Locally the file is missing, so the app falls back to `http://localhost:5080`.
+
+## Local development
+
+```bash
+cp .env.example .env                    # set KGP_SQL_PASSWORD (local only)
+docker compose up -d                    # SQL Server 2022 (Developer edition, emulated on Apple Silicon)
+dotnet user-secrets set "ConnectionStrings:Kgp" \
+  "Server=localhost,1433;Database=kgp;User Id=sa;Password=<same password>;TrustServerCertificate=True" \
+  --project src/backend/Kgp.Api
+dotnet run --project src/backend/Kgp.Api   # http://localhost:5080, migrates + seeds on start
+cd src/frontend && npx ng serve            # http://localhost:4200
+```
+
+Backend integration tests start their own SQL Server container through Testcontainers, so they need Docker running.
 
 ## API configuration (env vars set by Bicep)
 

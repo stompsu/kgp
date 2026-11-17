@@ -1,0 +1,33 @@
+{
+  "app": {
+    "title": "Korona Gór Polski",
+    "disclaimer": "Osobisty dziennik zdobywcy. Nie zastępuje oficjalnej weryfikacji przez Klub Zdobywców KGP.",
+    "language": "Język",
+    "switchTo": "English"
+  },
+  "map": {
+    "label": "Mapa szczytów Korony Gór Polski"
+  },
+  "peaks": {
+    "listTitle": "28 szczytów",
+    "listHint": "Wybierz szczyt na mapie lub z listy.",
+    "loading": "Wczytywanie szczytów…",
+    "waking": "Budzimy serwer i bazę danych. Pierwsze wczytanie po przerwie może potrwać do minuty…",
+    "error": "Nie udało się wczytać szczytów.",
+    "retry": "Spróbuj ponownie",
+    "notFound": "Nie znaleziono takiego szczytu."
+  },
+  "peak": {
+    "number": "Szczyt nr {{number}} z {{total}}",
+    "range": "Pasmo",
+    "height": "Wysokość",
+    "heightValue": "{{height}} m n.p.m.",
+    "coordinates": "Współrzędne",
+    "openInOsm": "Otwórz w OpenStreetMap",
+    "notes": "Ciekawostka: spór o najwyższy punkt",
+    "sources": "Źródła",
+    "close": "Zamknij",
+    "backToList": "Wszystkie szczyty",
+    "trailsComing": "Szlaki i parkingi pojawią się wkrótce."
+  }
+}

@@ -7,7 +7,7 @@ Each milestone is closed by **qa-reviewer** once every acceptance criterion has 
 - Repo structure, `/health` API, Angular shell with an empty Leaflet map, Bicep for the full resource group, CI, subagents, docs.
 - Acceptance: `dotnet test`, `ng build`, `ng test` and `az bicep build` all pass; initial commit on `main`.
 
-## M1 Walking skeleton
+## M1 Walking skeleton 🚧 (built and verified locally; Azure deploy pending)
 **Owners:** geo-data-curator → backend-dotnet → frontend-angular → azure-infra
 - geo-data-curator fills verified coordinates for all 28 peaks in `data/peaks.json`, with sources.
 - EF Core + Azure SQL (`geography`) model, seeder, `GET /api/peaks`, `GET /api/peaks/{slug}` (anonymous).

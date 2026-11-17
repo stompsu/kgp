@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "api",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": [
+        "run",
+        "--project",
+        "src/backend/Kgp.Api",
+        "--launch-profile",
+        "http"
+      ],
+      "port": 5080
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd src/frontend && npx ng serve"
+      ],
+      "port": 4200
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "app": {
+    "title": "Crown of Polish Mountains",
+    "disclaimer": "A personal hiking log. It does not replace official verification by the KGP Club.",
+    "language": "Language",
+    "switchTo": "Polski"
+  },
+  "map": {
+    "label": "Map of the Crown of Polish Mountains peaks"
+  },
+  "peaks": {
+    "listTitle": "28 peaks",
+    "listHint": "Pick a peak on the map or from the list.",
+    "loading": "Loading peaks…",
+    "waking": "Waking up the server and database. The first load after a break can take up to a minute…",
+    "error": "Couldn't load the peaks.",
+    "retry": "Try again",
+    "notFound": "No such peak."
+  },
+  "peak": {
+    "number": "Peak {{number}} of {{total}}",
+    "range": "Range",
+    "height": "Height",
+    "heightValue": "{{height}} m a.s.l.",
+    "coordinates": "Coordinates",
+    "openInOsm": "Open in OpenStreetMap",
+    "notes": "Did you know: the highest point is disputed",
+    "sources": "Sources",
+    "close": "Close",
+    "backToList": "All peaks",
+    "trailsComing": "Trails and parking are coming soon."
+  }
+}

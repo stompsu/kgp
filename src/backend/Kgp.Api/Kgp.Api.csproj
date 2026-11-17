@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
     <ProjectReference Include="..\Kgp.Domain\Kgp.Domain.csproj" />
@@ -13,6 +13,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>27d3c8b7-5fd8-4f27-9769-795edfe9d3fc</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Canonical peak list lives in /data; ship it next to the app for the seeder. -->
+    <None Include="../../../data/peaks.json" Link="data/peaks.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>

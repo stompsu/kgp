@@ -1,0 +1,17 @@
+# Local SQL Server for development. Azure uses Azure SQL Database serverless instead.
+# Usage: cp .env.example .env (set a password), then `docker compose up -d`.
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64   # runs under emulation on Apple Silicon
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${KGP_SQL_PASSWORD:?Set KGP_SQL_PASSWORD in .env}
+    ports:
+      - "1433:1433"
+    volumes:
+      - kgp-sql:/var/opt/mssql
+
+volumes:
+  kgp-sql:

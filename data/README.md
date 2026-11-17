@@ -1,7 +1,7 @@
 # Data
 
 - `peaks.json`: the 28 official Korona Gór Polski peaks (name, range, height per https://kgp.info.pl/wykaz-szczytow/).
-  Coordinates are `null` until they are verified in M1. Known disputes about which summit is really the highest are recorded in `notes`.
+  Coordinates are the OpenStreetMap summit node linked in each peak's `sources` (verified 2026-11-17). Known disputes about which summit is really the highest are recorded in `notes`.
   The app always uses the official KGP peak.
 - `osm/`: GeoJSON exports of parking and hiking trails near each summit (generated in M3 by `scripts/`).
 - `scripts/`: offline import scripts (Overpass). Never called from the browser.

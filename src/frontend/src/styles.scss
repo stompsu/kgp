@@ -1,1 +1,53 @@
-html, body { height: 100%; margin: 0; font-family: system-ui, sans-serif; }
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$green-palette,
+        tertiary: mat.$orange-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
+
+body {
+  color-scheme: light;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0;
+  height: 100%;
+}
+
+// Numbered peak markers (Leaflet divIcon). Kept global because Leaflet renders outside Angular's view encapsulation.
+.peak-marker {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--mat-sys-primary);
+  border: 2px solid var(--mat-sys-on-primary);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
+
+  span {
+    transform: rotate(45deg);
+    color: var(--mat-sys-on-primary);
+    font: 600 11px/1 Roboto, system-ui, sans-serif;
+  }
+
+  &.selected {
+    background: var(--mat-sys-tertiary);
+    outline: 3px solid var(--mat-sys-tertiary-container);
+  }
+}
+
+.leaflet-marker-icon:focus-visible .peak-marker {
+  outline: 3px solid var(--mat-sys-tertiary);
+  outline-offset: 2px;
+}

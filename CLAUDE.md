@@ -13,7 +13,9 @@ It does **not** replace official verification by the KGP club. Keep that disclai
   architect (docs/contracts), backend-dotnet, frontend-angular, azure-infra, geo-data-curator, qa-reviewer
 
 ## Commands
-- Backend: `cd src/backend && dotnet test Kgp.slnx` · run: `dotnet run --project Kgp.Api`
+- Local DB: `docker compose up -d` (needs `.env` from `.env.example`; connection string in user-secrets, see docs/architecture.md)
+- Backend: `cd src/backend && dotnet test Kgp.slnx` (integration tests need Docker) · run: `dotnet run --project Kgp.Api` (port 5080)
+- Migrations: `dotnet ef migrations add <Name> --project src/backend/Kgp.Infrastructure --startup-project src/backend/Kgp.Infrastructure --output-dir Persistence/Migrations` (run `dotnet tool restore` first)
 - Frontend: `cd src/frontend && npx ng serve` · `npx ng build` · `npx ng test --watch=false`
 - Infra: `az bicep build --file infra/main.bicep` · `az bicep lint --file infra/main.bicep`
 
@@ -22,5 +24,6 @@ It does **not** replace official verification by the KGP club. Keep that disclai
 - Never run `azd up/provision/down` or change Azure resources without explicit user approval.
 - Managed identity only. Don't commit secrets, and don't use storage keys or DB passwords.
 - Pin Microsoft.AspNetCore.* packages to 10.0.x (NuGet's latest is 11.x, which targets .NET 11).
+- `resource.value()` throws while an Angular resource is in error state; read it via `hasValue()` (see map-page.ts).
 - Never invent peak coordinates or heights. Follow kgp.info.pl and cite sources in `data/peaks.json`.
 - UI: Polish first, English second.

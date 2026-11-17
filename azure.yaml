@@ -10,8 +10,14 @@ services:
     host: containerapp
     docker:
       path: Dockerfile
+      context: ../..   # repo root, so the image can include data/peaks.json
   web:
     project: src/frontend
     language: js
     host: staticwebapp
     dist: dist/frontend/browser
+    hooks:
+      prepackage:
+        posix:
+          shell: sh
+          run: ../../infra/hooks/write-web-config.sh

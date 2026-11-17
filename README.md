@@ -6,12 +6,13 @@ Companion app for people collecting the **Korona Gór Polski** (Crown of Polish 
 
 ## Quick start
 
-```bash
-# API: http://localhost:5xxx/health
-cd src/backend && dotnet run --project Kgp.Api
+Needs Docker, the .NET 10 SDK and Node. Full steps are in [docs/architecture.md](docs/architecture.md#local-development).
 
-# Web: http://localhost:4200
-cd src/frontend && npm install && npx ng serve
+```bash
+cp .env.example .env && docker compose up -d     # local SQL Server
+dotnet tool restore
+dotnet run --project src/backend/Kgp.Api          # http://localhost:5080/api/peaks
+cd src/frontend && npm install && npx ng serve    # http://localhost:4200
 ```
 
 ## Deploy (Azure)
