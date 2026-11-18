@@ -13,6 +13,12 @@ const TRAIL_FIT_MAX_ZOOM = 14;
 /** Bounds of the KGP peaks with a margin; the whole crown is in southern Poland. */
 const INITIAL_BOUNDS = L.latLngBounds([48.9, 15.2], [51.1, 23.0]);
 
+/**
+ * OSM's tile usage policy blocks requests without a Referer. Static Web Apps sends `Referrer-Policy: same-origin`
+ * by default, which strips it, so each tile asks for the origin explicitly (never the path).
+ */
+export const TILE_REFERRER_POLICY = 'strict-origin-when-cross-origin' as const;
+
 @Component({
   selector: 'app-map',
   template: `<div #mapHost class="map" role="region" [attr.aria-label]="label()"></div>`,
@@ -54,6 +60,7 @@ export class MapComponent implements OnDestroy {
     parking: L.layerGroup(),
     waymarked: L.tileLayer('https://tile.waymarkedtrails.org/hiking/{z}/{x}/{y}.png', {
       maxZoom: 18,
+      referrerPolicy: TILE_REFERRER_POLICY,
       opacity: 0.7,
       zIndex: 2,
       attribution: '&copy; <a href="https://waymarkedtrails.org">waymarkedtrails.org</a> (CC BY-SA)',
@@ -71,6 +78,7 @@ export class MapComponent implements OnDestroy {
       this.map = L.map(host, { zoomControl: true });
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
+        referrerPolicy: TILE_REFERRER_POLICY,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(this.map);
       this.layer.addTo(this.map);

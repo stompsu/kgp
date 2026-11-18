@@ -52,6 +52,21 @@ describe('MapComponent layer toggles', () => {
     expect(JSON.parse(store.get(LAYER_PREFS_KEY)!)).toEqual({ trails: true, parking: false, waymarked: true });
   });
 
+  it('asks for a Referer on every tile layer (OSM tile usage policy)', async () => {
+    store.set(LAYER_PREFS_KEY, JSON.stringify({ trails: true, parking: true, waymarked: true }));
+    const { internals } = await render();
+
+    const tileLayers: L.TileLayer[] = [];
+    internals.map.eachLayer((layer) => {
+      if (layer instanceof L.TileLayer) tileLayers.push(layer);
+    });
+
+    expect(tileLayers).toHaveLength(2);
+    for (const layer of tileLayers) {
+      expect(layer.options.referrerPolicy).toBe('strict-origin-when-cross-origin');
+    }
+  });
+
   it('zooms to a deep-linked peak once the peaks arrive after the map is sized', async () => {
     const { fixture, internals } = await render();
     fixture.componentRef.setInput('selectedSlug', 'rysy');
